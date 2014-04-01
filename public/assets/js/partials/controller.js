@@ -15,7 +15,13 @@ $(function() {
 		socket.emit('message', {message : 'Controller joined to the room : ' + room_id});
 
 		socket.on('checkroom', function(data) {
-			$('#controller_message').text(data);
+		    $('#controller_message').text(data);
+
+                           socket.emit('connected_user', room_id);
 		});
+
+                        socket.on('connected_person', function() {
+                        console.log('connected person controller.js');
+                    });
 	});
 });

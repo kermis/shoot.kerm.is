@@ -3,10 +3,11 @@
 | Import some modules
 |------------------------------------------------------------------------------------
 */
-	var express  = require('express'),
-		path 	 = require('path'),
-		http 	 = require('http'),
-		socketio = require('socket.io');
+	var
+	express = require('express'),
+	path = require('path'),
+	http = require('http'),
+	socketio = require('socket.io');
 		//game	 = require('./game');
 
 /*
@@ -30,7 +31,7 @@
 	});
 
 	app.get('/', function(req, res) { // request, response
-		alert('running')
+		res.send('app is running');
 	});
 
 /*
@@ -53,11 +54,11 @@
 
 /*
 |------------------------------------------------------------------------------------
-| Listen to socket.io messages 
+| Listen to socket.io messages
 |------------------------------------------------------------------------------------
 */
 	io.sockets.on('connection', function(socket) {
-		
+
 		socket.on('message', function(data) {
 			console.log('MESSAGE', data);
 		});
@@ -65,7 +66,12 @@
 		socket.on('room', function(room) {
 			roomID = room;
 
-			checkRoom(socket, roomID);	
+			checkRoom(socket, roomID);
+		});
+
+		socket.on('connected_user', function(data) {
+			console.log('connected_user', data);
+			io.sockets.emit('connected_person', data);
 		});
 
 	});
@@ -81,11 +87,10 @@
 
 		if(io.sockets.manager.rooms['/' + roomID])
 		{
-			socket.emit('checkroom', 'this room ('+ roomID + ') is occupied');
+			socket.emit('checkroom', 'You cannot connect to this room.');
 		} else {
 			socket.join(roomID);
-			socket.emit('checkroom', 'this room (' + roomID + ') is yours');
+			socket.emit('checkroom', 'You are connected');
 		}
 	}
 
-	

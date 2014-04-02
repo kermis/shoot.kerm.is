@@ -17,7 +17,7 @@ $(function() {
 		socket.on('checkroom', function(data) {
 		    $('#controller_message').text(data);
 
-                           socket.emit('connected_user', room_id);
+            socket.emit('connected_user', room_id);
 		});
 
                         socket.on('connected_person', function() {

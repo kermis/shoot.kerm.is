@@ -57,6 +57,9 @@
 | Listen to socket.io messages
 |------------------------------------------------------------------------------------
 */
+	var roomID, roomio;
+
+
 	io.sockets.on('connection', function(socket) {
 
 		socket.on('message', function(data) {
@@ -65,13 +68,18 @@
 
 		socket.on('room', function(room) {
 			roomID = room;
-
+			roomio = room;
 			checkRoom(socket, roomID);
 		});
 
 		socket.on('connected_user', function(data) {
 			console.log('connected_user', data);
 			io.sockets.emit('connected_person', data);
+		});
+
+		socket.on('motiondata', function(data) {
+
+			io.sockets.emit('motiondatas', data);
 		});
 
 	});

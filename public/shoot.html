@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Shoot Game</title>
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+	<div id="container"></div>
+
+	<!-- Three.js stuff -->
+    <script src='assets/js/libs/three.min.js'></script>
+    <!-- <script src="vendor/require.js/require.js"></script> -->
+    <script src="assets/js/libs/three.js/examples/js/Detector.js"></script>
+    <script src="assets/js/libs/threex.windowresize.js"></script>
+    <script src="assets/js/libs/TrackballControls.js"></script>
+    <script src="assets/js/libs/stats.min.js"></script>
+    <script src="assets/js/libs/dat.gui.min.js"></script>
+
+    <!-- Socket stuff -->
+    <script src="assets/js/libs/socket.io.min.js"></script>
+
+    <!-- jQuery & Leap Stuff -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//js.leapmotion.com/leap-0.4.2.min.js"></script>
+
+	<script src="assets/js/partials/url.js"></script>
+	<script src="assets/js/partials/room.js"></script>
+	<script src="assets/js/partials/main.js"></script>
+	<script src="assets/js/partials/setup.js"></script>
+	<script src="assets/js/partials/leap.js"></script>
+	<script src="assets/js/partials/shoot.js"></script>
+
+
+	<script>
+
+
+		socket.on('motiondatas', function(data) {
+
+			console.log('motiondata cilent');
+
+			if(data.alpha) { setup.phoneObj.rotY = deg2rad(data.alpha); }
+			if(data.beta) { setup.phoneObj.rotX = deg2rad(data.beta);}
+			if(data.gamma) { setup.phoneObj.rotZ = deg2rad(data.gamma); }
+
+
+			console.log('setup', setup);
+			updateGun();
+		});
+
+		function deg2rad(angle) {
+			return angle * .017453292519943295;
+		}
+
+		function updateGun() {
+
+			console.log('updateGun', setup.phoneObj.rotZ);
+
+			try {
+
+		        if(setup.phoneObj.rotZ) { setup.loaded_gun.rotation.z = setup.phoneObj.rotZ; }
+
+			} catch (r) {
+				console.log('updateGun catch', r);
+			}
+		}
+
+	</script>
+
+</body>
+</html>

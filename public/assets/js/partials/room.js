@@ -28,7 +28,8 @@ var room = {
 	},
 
 	getID : function() {
-		return room.queryParam('roomNumber');
+		var id = room.queryParam('roomNumber');
+		return id;
 	},
 
 	queryParam : function(name) {

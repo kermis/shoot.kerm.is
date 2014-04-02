@@ -13,5 +13,6 @@
         "http" : "0.0.0",
         "sockjs" : "~0.3.8",
         "node-static" : "~0.7.3"
-    }
+    },
+   "start":"node app.js"
 }

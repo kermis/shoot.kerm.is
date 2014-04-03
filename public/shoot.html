@@ -37,29 +37,30 @@
 
 
 		socket.on('motiondatas', function(data) {
+			//if(data.alpha) { setup.phoneObj.rotY = deg2rad(data.alpha); }
+			//if(data.beta) { setup.phoneObj.rotX = deg2rad('beta', data.beta) * 5;}
+			if(data.gamma) { setup.phoneObj.rotZ = deg2rad('gamma', data.gamma); }
 
-			console.log('motiondata cilent');
-
-			if(data.alpha) { setup.phoneObj.rotY = deg2rad(data.alpha); }
-			if(data.beta) { setup.phoneObj.rotX = deg2rad(data.beta);}
-			if(data.gamma) { setup.phoneObj.rotZ = deg2rad(data.gamma); }
-
-
-			console.log('setup', setup);
 			updateGun();
 		});
 
-		function deg2rad(angle) {
-			return angle * .017453292519943295;
+		socket.on('shoot', function(data) {
+        	console.log('shoooooooot');
+        });
+
+
+
+		function deg2rad(type, angle) {
+			var rad =  angle * .017453292519943295;
+			return rad;
 		}
 
 		function updateGun() {
 
-			console.log('updateGun', setup.phoneObj.rotZ);
-
 			try {
 
 		        if(setup.phoneObj.rotZ) { setup.loaded_gun.rotation.z = setup.phoneObj.rotZ; }
+		        //if(setup.phoneObj.rotX) { setup.loaded_gun.rotation.x = setup.phoneObj.rotX; }
 
 			} catch (r) {
 				console.log('updateGun catch', r);

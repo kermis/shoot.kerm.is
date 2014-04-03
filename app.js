@@ -78,9 +78,14 @@
 		});
 
 		socket.on('motiondata', function(data) {
-
-			io.sockets.emit('motiondatas', data);
+			console.log('motiondata', roomio);
+			io.sockets.in(roomio).emit('motiondatas', data);
 		});
+
+		socket.on('shoot', function(data) {
+			console.log('user is shooting');
+			io.sockets.in(roomio).emit('shoot', data);
+		})
 
 	});
 
@@ -91,14 +96,23 @@
 |------------------------------------------------------------------------------------
 */
 	function checkRoom(socket, roomID) {
-		var rooms = io.sockets.manager.rooms
+		var rooms = io.sockets.manager.rooms;
 
-		if(io.sockets.manager.rooms['/' + roomID])
+		if(rooms['/' + roomID])
 		{
-			socket.emit('checkroom', 'You cannot connect to this room.');
-		} else {
-			socket.join(roomID);
-			socket.emit('checkroom', 'You are connected');
+			if(rooms['/' + roomID].length >= 2)
+			{
+				socket.emit('checkroom', 'You cannot connect to this room.');
+			} else {
+				socket.join(roomID);
+				socket.emit('checkroom', 'You are connected');
+			}
+
 		}
+		else {
+			socket.join(roomID);
+		}
+
+		console.log('rooms', rooms);
 	}
 

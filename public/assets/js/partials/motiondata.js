@@ -13,20 +13,13 @@ $(function() {
 function devOrientHandler(eventData) {
 	 motionD = {
         gamma: event.gamma,
-        beta: event.beta,
-        alpha: event.alpha,
-       
+        beta: event.beta     
     }
+
+    //socket.emit('motiondata', motionD );
 }
 
 
 setInterval(function() {
-
-	var id = room.getID();
-
-	console.log('setInterval', id);
-
-	motionD
-
 	socket.emit('motiondata', motionD );
 }, 200);

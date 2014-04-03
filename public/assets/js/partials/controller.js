@@ -20,8 +20,14 @@ $(function() {
             socket.emit('connected_user', room_id);
 		});
 
-                        socket.on('connected_person', function() {
-                        console.log('connected person controller.js');
-                    });
+        socket.on('connected_person', function() {
+        	console.log('connected person controller.js');
+    	});
+
+                  
 	});
+
+	$('.shoot').on('click', function() {
+		socket.emit('shoot', {message : 'user clicked shoot button'});
+	})
 });

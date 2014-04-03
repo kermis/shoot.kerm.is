@@ -8,7 +8,7 @@ url.check();
 
 room.setID();
 
-console.log(room.id);
+
 
 /*
 |------------------------------------------------------------------------------------
@@ -21,7 +21,9 @@ console.log(room.id);
 	socket.on('connect', function() {
 		console.log('main.js connect', room.id);
 		socket.emit('message', {msg : 'you are connected to the room ' + room.id})
-	});
+	 socket.emit('room', room.id);
+  });
+
 
             socket.on('connected_person', function(data)
             {

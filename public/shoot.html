@@ -1,73 +1,87 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Shoot Game</title>
-	<link rel="stylesheet" href="assets/css/main.css">
+    <meta charset="UTF-8">
+    <title>Shoot Cannon.js</title>
+
+    <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                background-color: #ffffff;
+                margin: 0;
+                overflow: hidden;
+                font-family: arial;
+            }
+
+            #blocker {
+
+                position: absolute;
+
+                width: 100%;
+                height: 100%;
+
+                background-color: rgba(0,0,0,0.5);
+
+            }
+
+            #instructions {
+
+                width: 100%;
+                height: 100%;
+
+                display: -webkit-box;
+                display: -moz-box;
+                display: box;
+
+                -webkit-box-orient: horizontal;
+                -moz-box-orient: horizontal;
+                box-orient: horizontal;
+
+                -webkit-box-pack: center;
+                -moz-box-pack: center;
+                box-pack: center;
+
+                -webkit-box-align: center;
+                -moz-box-align: center;
+                box-align: center;
+
+                color: #ffffff;
+                text-align: center;
+
+                cursor: pointer;
+
+            }
+            </style>
+
 </head>
 <body>
 
-	<div id="container"></div>
-
-	<!-- Three.js stuff -->
-    <script src='assets/js/libs/three.min.js'></script>
-    <!-- <script src="vendor/require.js/require.js"></script> -->
-    <script src="assets/js/libs/three.js/examples/js/Detector.js"></script>
-    <script src="assets/js/libs/threex.windowresize.js"></script>
-    <script src="assets/js/libs/TrackballControls.js"></script>
-    <script src="assets/js/libs/stats.min.js"></script>
-    <script src="assets/js/libs/dat.gui.min.js"></script>
-
-    <!-- Socket stuff -->
-    <script src="assets/js/libs/socket.io.min.js"></script>
-
-    <!-- jQuery & Leap Stuff -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//js.leapmotion.com/leap-0.4.2.min.js"></script>
-
-	<script src="assets/js/partials/url.js"></script>
-	<script src="assets/js/partials/room.js"></script>
-	<script src="assets/js/partials/main.js"></script>
-	<script src="assets/js/partials/setup.js"></script>
-	<script src="assets/js/partials/leap.js"></script>
-	<script src="assets/js/partials/shoot.js"></script>
 
 
-	<script>
+<script src="assets/js/libs/Three.js"></script>
+<script src="assets/js/libs/cannon.js"></script>
+<script src="assets/js/libs/PointerLockControls.js"></script>
+<script src="assets/js/libs/OBJLoader.js"></script>
 
-
-		socket.on('motiondatas', function(data) {
-			//if(data.alpha) { setup.phoneObj.rotY = deg2rad(data.alpha); }
-			//if(data.beta) { setup.phoneObj.rotX = deg2rad('beta', data.beta) * 5;}
-			if(data.gamma) { setup.phoneObj.rotZ = deg2rad('gamma', data.gamma); }
-
-			updateGun();
-		});
-
-		socket.on('shoot', function(data) {
-        	console.log('shoooooooot');
-        });
+<div id="blocker">
+    <div id="instructions">
+        <span style="font-size:40px">Click to play</span>
+        <br />
+        (W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)
+    </div>
+</div>
 
 
 
-		function deg2rad(type, angle) {
-			var rad =  angle * .017453292519943295;
-			return rad;
-		}
+<script src="assets/js/partials/shooting_game.js"></script>
 
-		function updateGun() {
 
-			try {
 
-		        if(setup.phoneObj.rotZ) { setup.loaded_gun.rotation.z = setup.phoneObj.rotZ; }
-		        //if(setup.phoneObj.rotX) { setup.loaded_gun.rotation.x = setup.phoneObj.rotX; }
 
-			} catch (r) {
-				console.log('updateGun catch', r);
-			}
-		}
-
-	</script>
 
 </body>
 </html>

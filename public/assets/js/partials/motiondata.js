@@ -1,25 +1,25 @@
-var motionD;
+// var motionD;
 
-$(function() {
+// $(function() {
 
-	console.log('motiondata');
+// 	console.log('motiondata');
 
-	if(window.DeviceOrientationEvent) {
-		window.addEventListener('deviceorientation', devOrientHandler, false);
-	}
-});
-
-
-function devOrientHandler(eventData) {
-	 motionD = {
-        gamma: event.gamma,
-        beta: event.beta     
-    }
-
-    //socket.emit('motiondata', motionD );
-}
+// 	if(window.DeviceOrientationEvent) {
+// 		window.addEventListener('deviceorientation', devOrientHandler, false);
+// 	}
+// });
 
 
-setInterval(function() {
-	socket.emit('motiondata', motionD );
-}, 200);
+// function devOrientHandler(eventData) {
+// 	 motionD = {
+//         gamma: event.gamma,
+//         beta: event.beta
+//     }
+
+//     //socket.emit('motiondata', motionD );
+// }
+
+
+// setInterval(function() {
+// 	socket.emit('motiondata', motionD );
+// }, 200);

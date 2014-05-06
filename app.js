@@ -77,14 +77,14 @@
 			io.sockets.emit('connected_person', data);
 		});
 
-		socket.on('motiondata', function(data) {
-			console.log('motiondata', roomio);
-			io.sockets.in(roomio).emit('motiondatas', data);
-		});
+		// socket.on('motiondata', function(data) {
+		// 	console.log('motiondata', roomio);
+		// 	io.sockets.in(roomio).emit('motiondatas', data);
+		// });
 
 		socket.on('shoot', function(data) {
-			console.log('user is shooting');
-			io.sockets.in(roomio).emit('shoot', data);
+			console.log('user is shooting', data);
+			io.sockets.in(data.message).emit('shoot', data);
 		})
 
 	});
@@ -103,7 +103,8 @@
 			if(rooms['/' + roomID].length >= 2)
 			{
 				socket.emit('checkroom', 'You cannot connect to this room.');
-			} else {
+			}
+			else {
 				socket.join(roomID);
 				socket.emit('checkroom', 'You are connected');
 			}

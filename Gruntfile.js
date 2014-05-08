@@ -32,12 +32,12 @@ module.exports = function(grunt) {
       },
       /* watch and see if our javascript files change, or new packages are installed */
       js: {
-        files: ['public/assets/js/main.js', 'public/assets/partials/*.js', 'public/assets/libs/*.js'],
+        files: ['public/assets/js/main.js', 'public/assets/js/partials/*.js', 'public/assets/js/libs/*.js'],
         tasks: ['uglify']
       },
       /* watch our files for change, reload */
       livereload: {
-        files: ['*.html', 'public/assets/css/*.css', 'public/assets/images/*', 'public/assets/js/partials/*js'],
+        files: ['*.html', 'public/assets/css/*.css', 'public/assets/images/*', 'public/assets/js/partials/*.js', 'public/assets/libs/*.js'],
         options: {
           livereload: true
         }

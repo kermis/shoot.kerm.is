@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shooting game</title>
+
+  <style type="text/css">
+
+    body {
+        margin:0px;
+    }
+
+    #container {
+        border:5px white solid;
+        position: relative;
+        width: auto;
+        cursor: pointer;
+        height: 656px;
+        display: flex;
+    }
+
+    </style>
+</head>
+<body>
+
+
+    <article id="container"><div class="filler"></div></article>
+
+    <script src="assets/js/libs/three.min.js"></script>
+    <script src="assets/js/libs/physi.js"></script>
+    <script src="assets/js/libs/stats.min.js"></script>
+    <!-- <script src="assets/js/libs/dat.gui.min.js"></script> -->
+
+    <script src="assets/js/partials/game_shooting.js"></script>
+
+    <script>
+        init();
+        animate();
+
+        document.addEventListener('click', shoot, false);
+        window.addEventListener( 'resize', onWindowResize, false );
+        document.addEventListener( 'mousemove', updateBullet, false );
+        document.addEventListener( 'keydown', onKeyDown, false );
+
+    </script>
+
+</body>
+</html>

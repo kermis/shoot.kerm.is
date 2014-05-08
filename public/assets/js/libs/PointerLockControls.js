@@ -7,7 +7,7 @@
     // var eyeYPos = 2; // eyes are 2 meters above the ground
     // var velocityFactor = 0.2;
     // var jumpVelocity = 20;
-    // var scope = this;
+    var scope = this;
 
     var pitchObject = new THREE.Object3D();
     pitchObject.add( camera );
@@ -46,18 +46,18 @@
 
     var PI_2 = Math.PI / 2;
 
-    // var onMouseMove = function ( event ) {
+    var onMouseMove = function ( event ) {
 
-    //     if ( scope.enabled === false ) return;
+        if ( scope.enabled === false ) return;
 
-    //     var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-    //     var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-    //     yawObject.rotation.y -= movementX * 0.002;
-    //     pitchObject.rotation.x -= movementY * 0.002;
+        yawObject.rotation.y -= movementX * 0.002;
+        pitchObject.rotation.x -= movementY * 0.002;
 
-    //     pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
-    // };
+        pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, pitchObject.rotation.x ) );
+    };
 
     // var onKeyDown = function ( event ) {
 
@@ -120,7 +120,7 @@
 
     // };
 
-    // document.addEventListener( 'mousemove', onMouseMove, false );
+    document.addEventListener( 'mousemove', onMouseMove, false );
     // document.addEventListener( 'keydown', onKeyDown, false );
     // document.addEventListener( 'keyup', onKeyUp, false );
 

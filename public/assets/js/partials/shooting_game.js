@@ -1,3 +1,7 @@
+var setup = {
+    loaded_gun : null
+}
+
 /**
  *
  * GLOBAL VARS
@@ -316,17 +320,34 @@ function addTeeth() {
 }
 
 function addGun() {
-        var gun = new THREE.ObjectLoader();
-        gun.load('assets/js/models/gun.js', function(mesh) {
+        // var gun = new THREE.ObjectLoader();
 
-            // setup.loaded_gun = mesh;
-            mesh.position.set(1, -22, 10);
-            mesh.rotation.set(1, 0, 0);
-            mesh.scale.set(.2, .5, .2);
-            mesh.castShadow = mesh.receiveShadow = true;
-            scene.add(mesh);
+        // gun.load('assets/js/models/gun.js', function(mesh) {
+        //     setup.loaded_gun = mesh;
+        //     mesh.position.set(0, 1, -5);
+        //     // mesh.rotation.set(1, 0, 0);
+        //     mesh.scale.set(1, 1, 1);
+        //     mesh.name = 'gun';
+        //     mesh.castShadow = mesh.receiveShadow = true;
+        //     scene.add(mesh);
+        // });
 
-        });
+        // setup.loaded_gun = gun;
+
+        // console.log(setup.loaded_gun);
+        // console.log(mesh, gun);
+
+         var duckScale = 0.2;
+    var ducky = new THREE.ObjectLoader();
+    ducky.load('/models/duck.js', function(mesh) {
+        duck = mesh;
+        mesh.scale.set(duckScale, duckScale, duckScale);
+        mesh.position.set(-200, 23, 400);
+        scene.add(mesh);
+
+    });
+
+
 }
 
 function initPointerLock() {

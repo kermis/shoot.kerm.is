@@ -76,15 +76,16 @@ function init() {
 
    console.log();
 
-if(start) {
+
   setInterval(function() {
-
-    if(teeth.length < 5) addTooth();
+    if(start) {
+     if(teeth.length < 5) addTooth();
     // else console.log(teeth);
-
+    }
   }, ((Math.floor(Math.random() * 10)) + 1) * 1000);
 
-}
+
+
 }
 
 /**
@@ -110,40 +111,6 @@ var animate = function() {
 };
 
 
-
-// /**
-//  *
-//  * Check if we can access the pointer lock
-//  *
-//  */
-
-// var checkPointerLock = function() {
-//   var havePointerLock  =   'pointerLockElement' in document ||
-//                                         'mozPointerLockElement' in document ||
-//                                         'webkitPointerLockElement' in document;
-
-//   if(havePointerLock)
-//   {
-//       document.addEventListener('pointerlockchange', changeCallback, false);
-//         document.addEventListener('mozpointerlockchange', changeCallback, false);
-//         document.addEventListener('webkitpointerlockchange', changeCallback, false);
-
-//     //check for errors
-//     document.addEventListener('pointerlockerror', errorCallback, false);
-//     document.addEventListener('mozpointerlockerror', errorCallback, false);
-//     document.addEventListener('webkitpointerlockerror', errorCallback, false);
-//   }
-
-// }
-
-
-// function errorCallback(e) {
-//     alert("There was an error", e);
-// }
-
-// function changeCallback(e) {
-//   alert('changed');
-// }
 
 /**
  *
@@ -249,26 +216,62 @@ var buildGround = function() {
   groundGeometry.computeFaceNormals();
   groundGeometry.computeVertexNormals();
 
-  var groundMaterial = Physijs.createMaterial(
+  // var groundMaterial = Physijs.createMaterial(
 
-    new THREE.MeshPhongMaterial({ // A material for shiny surfaces, evaluated per pixel.
-      color: 0x999999,
-      wireframe : false, // Whether the triangles' edges are displayed instead of surfaces.
-      shininess : 10,
-      color:0xdddddd,
-      emissive : 0x111111
-    }),
-    .8, // friction
-    .8 // restitution
-  );
+  //   new THREE.MeshPhongMaterial({ // A material for shiny surfaces, evaluated per pixel.
+  //     color: 0x999999,
+  //     wireframe : false, // Whether the triangles' edges are displayed instead of surfaces.
+  //     shininess : 10,
+  //     color:0xdddddd,
+  //     emissive : 0x111111,
+  //   }),
+  //   .1, // friction
+  //   .1 // restitution
+  // );
 
-      var ground = new Physijs.HeightfieldMesh(groundGeometry, groundMaterial, 0); // matches a regular grid of height values given in the z-coordinates
+    var grassTexture = THREE.ImageUtils.loadTexture( 'assets/img/grasslight-big.jpg' );
+    grassTexture.wrapS =grassTexture.wrapT = THREE.RepeatWrapping;
+    grassTexture.repeat.set( 1, 1 );
+
+      var material = new THREE.MeshPhongMaterial( { map: grassTexture, friction : 1, restitution : 1 } );
+
+      var ground = new Physijs.HeightfieldMesh(groundGeometry, material, 0); // matches a regular grid of height values given in the z-coordinates
       ground.rotation.x = -Math.PI / 2;
       ground.receiveShadow = true;
       ground.castShadow = true;
       ground.name = "ground";
 
       scene.add( ground );
+
+     //landscape
+
+
+    // var landscape = new THREE.JSONLoader();
+    // landscape.load('assets/js/models/pit.js', function (geometry, mat) {
+
+
+
+    //         pit = new Physijs.Mesh(geometry, mat[0]);
+
+
+    //         pit.scale.set(30, 30, 30)
+    //         // // mesh.scale.x = 30;
+    //         // // mesh.scale.y = 30;
+    //         // // mesh.scale.z = 30;
+    //         // // mesh.name = 'rifle';
+
+    //         pit.position.set(0, -30, 0);
+    //         // // // mesh.rotation.x = deg2rad(-10);
+
+
+    //         // setup.rifle = mesh;
+
+    //         scene.add(pit);
+
+    //     });
+
+
+
 
 }
 
@@ -330,7 +333,7 @@ var buildBall = function() {
       side : THREE.FrontSide
 
     }),
-    .5, // friction
+    1, // friction
     .5 // restitution
 
   );
@@ -370,6 +373,39 @@ var buildBall = function() {
     ball.setLinearFactor(new THREE.Vector3( 0, 0, 0 ));
     ball.setLinearVelocity(new THREE.Vector3( 0, 0, 0 ));
     ball.setAngularVelocity(new THREE.Vector3( 0, 0, 0 ));
+
+
+
+
+    ball.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+      // // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
+      // console.log('relative_velocity', relative_velocity);
+      // console.log('relative_rotation', relative_rotation);
+      // console.log('contact_normal', contact_normal);
+
+      // var iamshot = this.name;
+      // // tooth.rotation.x = 8;
+      //console.log('col', other_object.name, contact_normal);
+
+
+      if(other_object.category == 'tooth') {
+
+        if(!this.cannotCollide){
+          other_object.material.wireframe = true;
+          other_object.shot = true;
+
+          setTimeout(function() {
+             removeATooth();
+            }, ((Math.floor(Math.random() * 7)) + 1) *  500);
+
+          }
+      }
+
+        if(other_object.name == 'ground') {
+          this.cannotCollide = true;
+        }
+  });
+
 
 }
 
@@ -412,9 +448,18 @@ var buildTooth = function() {
  */
 
 var addTooth = function() {
+
+  var createTexture = THREE.ImageUtils.loadTexture( 'assets/img/crate.jpg' );
+    createTexture.wrapS =createTexture.wrapT = THREE.RepeatWrapping;
+    createTexture.repeat.set( 1, 1 );
+
+      var createMaterial = new THREE.MeshPhongMaterial( { map: createTexture } );
+
+
+
   tooth = new Physijs.BoxMesh(
     new THREE.CubeGeometry( 100, 150, 20 ),
-    new THREE.MeshNormalMaterial()
+    createMaterial
    );
 
   //tooth.position.set(0, 80, 5);
@@ -425,35 +470,13 @@ var addTooth = function() {
   tooth.position.set(x, 75, z);
   tooth.receiveShadow = true;
   tooth.name = "tooth" + (teeth.length + 1);
+  tooth.category = 'tooth';
   tooth.castShadow = true;
   scene.add(tooth);
   teeth.push(tooth);
 
   //toothPivot.add(tooth);
 
-
-
-
-
-
-  tooth.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-      // // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-      // console.log('relative_velocity', relative_velocity);
-      // console.log('relative_rotation', relative_rotation);
-      // console.log('contact_normal', contact_normal);
-
-      // var iamshot = this.name;
-      // // tooth.rotation.x = 8;
-      //console.log('col', other_object.name, contact_normal);
-
-
-      if(other_object.name == 'bullet') {
-        //console.log('collision', this);
-        // setInterval(function(){ if(tooth.rotation.x >= -1.6) { tooth.rotation.x -= .1;  }} , 10);
-        this.material.wireframe = true;
-
-      }
-  });
 }
 
 /**
@@ -492,15 +515,16 @@ var buildLights = function() {
 
 var shoot = function(e) {
   if(start){
-  throwing = true;
+    throwing = true;
 
-  buildBall();
+    buildBall();
 
-  ball.setAngularFactor(new THREE.Vector3( 1, 1, 1 ));
-  ball.setLinearFactor(new THREE.Vector3( 1, 1, 1 ));
-  ball.setLinearVelocity(new THREE.Vector3(0, 100, -1000));
-  ball.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
-}
+    ball.setAngularFactor(new THREE.Vector3( 1, 1, 1 ));
+    ball.setLinearFactor(new THREE.Vector3( 1, 1, 1 ));
+    ball.setLinearVelocity(new THREE.Vector3(0, 100, -1000));
+    ball.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
+  }
+
 }
 
 
@@ -594,6 +618,7 @@ var rad2deg = function(angle) {
 
     if(setup.rifle)
       setup.rifle.position.x += movementX;
+      setup.rifle.position.y -= movementY;
   }
 }
 
@@ -641,12 +666,14 @@ var lockPointer = function() {
 
 var onKeyDown = function ( event ) {
 
-        switch ( event.keyCode ) {
+        // switch ( event.keyCode ) {
 
-            case 82: // R
-                buildBall();
-                break;
-        }
+        //     case 82: // R
+        //         // buildBall();
+        //         // removeATooth();
+
+        //         break;
+        // }
 
 };
 
@@ -672,4 +699,27 @@ var buildGun = function() {
             scene.add(mesh);
 
         });
+}
+
+var removeATooth = function() {
+
+  var i = 0;
+
+   $.each(teeth, function( index, tooth ) {
+
+      if(i == 0)
+      {
+
+        if(tooth.shot)
+        {
+
+          console.log('shot', tooth.name);
+          scene.remove(tooth);
+          teeth.splice(index, 1);
+          i++
+        }
+
+      }
+
+  });
 }

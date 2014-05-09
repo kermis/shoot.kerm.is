@@ -1,3 +1,7 @@
+var setup = {
+
+}
+
 /**
  *
  * Get the container element
@@ -16,11 +20,18 @@ var camera, scene, renderer;
 var sceneW, sceneH;
 var physicsMaterial;
 
+var start = false;
+
 var tooth, toothPivot;
+var teeth = new Array();
 
 var throwing = false;
 
 var stats;
+
+
+// The element we'll make fullscreen and pointer locked.
+var fullscreenElement;
 
 /**
  *
@@ -50,10 +61,30 @@ function init() {
   buildRenderer();
   buildCamera();
   buildGround();
-  buildBall();
+  // buildBall();
   buildTooth();
   buildLights();
+  buildGun();
 
+
+
+  /**
+   *
+   * Create after random seconds a new tooth
+   *
+   */
+
+   console.log();
+
+if(start) {
+  setInterval(function() {
+
+    if(teeth.length < 5) addTooth();
+    // else console.log(teeth);
+
+  }, ((Math.floor(Math.random() * 10)) + 1) * 1000);
+
+}
 }
 
 /**
@@ -65,7 +96,7 @@ function init() {
 var animate = function() {
 
   if(!throwing) {
-   ball.__dirtyPosition = true;
+   //ball.__dirtyPosition = true;
   }
 
 
@@ -78,6 +109,41 @@ var animate = function() {
 
 };
 
+
+
+// /**
+//  *
+//  * Check if we can access the pointer lock
+//  *
+//  */
+
+// var checkPointerLock = function() {
+//   var havePointerLock  =   'pointerLockElement' in document ||
+//                                         'mozPointerLockElement' in document ||
+//                                         'webkitPointerLockElement' in document;
+
+//   if(havePointerLock)
+//   {
+//       document.addEventListener('pointerlockchange', changeCallback, false);
+//         document.addEventListener('mozpointerlockchange', changeCallback, false);
+//         document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+//     //check for errors
+//     document.addEventListener('pointerlockerror', errorCallback, false);
+//     document.addEventListener('mozpointerlockerror', errorCallback, false);
+//     document.addEventListener('webkitpointerlockerror', errorCallback, false);
+//   }
+
+// }
+
+
+// function errorCallback(e) {
+//     alert("There was an error", e);
+// }
+
+// function changeCallback(e) {
+//   alert('changed');
+// }
 
 /**
  *
@@ -146,7 +212,7 @@ var buildRenderer = function() {
 
   renderer = new THREE.WebGLRenderer({ antialias : true });
   renderer.setSize(sceneW, sceneH);
-  renderer.setClearColor(0x000000); // background color
+  renderer.setClearColor(0x66ccff); // background color
   renderer.shadowMapEnabled = true;
   renderer.shadowMapSoft = true;
   renderer.shadowMapType = THREE.PCFShadowMap;
@@ -179,7 +245,7 @@ var buildCamera = function() {
 
 var buildGround = function() {
 
-  var groundGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10); // width, height, widhtSegments, heightSegments
+  var groundGeometry = new THREE.PlaneGeometry(10000, 1000, 10, 10); // width, height, widhtSegments, heightSegments
   groundGeometry.computeFaceNormals();
   groundGeometry.computeVertexNormals();
 
@@ -200,6 +266,7 @@ var buildGround = function() {
       ground.rotation.x = -Math.PI / 2;
       ground.receiveShadow = true;
       ground.castShadow = true;
+      ground.name = "ground";
 
       scene.add( ground );
 
@@ -263,8 +330,8 @@ var buildBall = function() {
       side : THREE.FrontSide
 
     }),
-    .8, // friction
-    .8 // restitution
+    .5, // friction
+    .5 // restitution
 
   );
 
@@ -272,7 +339,7 @@ var buildBall = function() {
    ballMaterial.map.repeat.set(1, 1);
 
    ball = new Physijs.SphereMesh(
-      new THREE.SphereGeometry( 15, 10, 3), // radius, widthSegments, heightSegments
+      new THREE.SphereGeometry( 3, 10, 3), // radius, widthSegments, heightSegments
       ballMaterial
    );
 
@@ -280,17 +347,30 @@ var buildBall = function() {
     ball.setLinearFactor(new THREE.Vector3( 0, 0, 0 ));
     ball.setLinearVelocity(new THREE.Vector3( 0, 0, 0 ));
     ball.setAngularVelocity(new THREE.Vector3( 0, 0, 0 ));
-   ball.position.y = 35;
-   ball.position.z = 350;
+   // ball.position.y = 35;
+   // ball.position.z = 350;
+
+
+   ball.position.y = setup.rifle.position.y;
+   ball.position.z = setup.rifle.position.z - 300;
+   ball.position.x = setup.rifle.position.x;
+
    ball.receiveShadow = true;
    ball.name = 'bullet';
    ball.castShadow = true;
+  //  // Enable CCD if the object moves more than 1 meter in one simulation frame
+  //  ball.setCcdMotionThreshold(40);
+  //  // Set the radius of the embedded sphere such that it is smaller than the object
+  // ball.setCcdSweptSphereRadius(0.2);
+
    scene.add(ball);
 
-    ball.setAngularFactor(new THREE.Vector3( 0, 0, 0 ));
+
+   ball.setAngularFactor(new THREE.Vector3( 0, 0, 0 ));
     ball.setLinearFactor(new THREE.Vector3( 0, 0, 0 ));
     ball.setLinearVelocity(new THREE.Vector3( 0, 0, 0 ));
     ball.setAngularVelocity(new THREE.Vector3( 0, 0, 0 ));
+
 }
 
 /**
@@ -318,9 +398,9 @@ var buildTooth = function() {
   // makeCrossAndSetPosition(toothPivot, 0, 0, 0);
 
 
-  for(var i = 0; i < 6; i++)
+  for(var i = 0; i < 2; i++)
   {
-    addTooth((105*i));
+    addTooth();
   }
 }
 
@@ -331,26 +411,28 @@ var buildTooth = function() {
  *
  */
 
-var addTooth = function(x) {
+var addTooth = function() {
   tooth = new Physijs.BoxMesh(
-    new THREE.CubeGeometry( 100, 150, 40 ),
+    new THREE.CubeGeometry( 100, 150, 20 ),
     new THREE.MeshNormalMaterial()
    );
 
   //tooth.position.set(0, 80, 5);
-  tooth.position.set(-255+x, 80 , 5);
+  var x = (Math.random()-0.5)*700;
+ // var y = 1 + (Math.random()-0.5)*1;
+  var z = ((Math.random()-.7)*400)+ Math.random(1,10);
+
+  tooth.position.set(x, 75, z);
   tooth.receiveShadow = true;
-  tooth.name = "tooth";
+  tooth.name = "tooth" + (teeth.length + 1);
   tooth.castShadow = true;
   scene.add(tooth);
+  teeth.push(tooth);
 
   //toothPivot.add(tooth);
 
 
-    tooth.setAngularFactor(new THREE.Vector3( 0, 0, 0 ));
-    tooth.setLinearFactor(new THREE.Vector3( 0, 0, 0 ));
-    tooth.setLinearVelocity(new THREE.Vector3( 0, 0, 0 ));
-    tooth.setAngularVelocity(new THREE.Vector3( 0, 0, 0 ));
+
 
 
 
@@ -360,18 +442,17 @@ var addTooth = function(x) {
       // console.log('relative_rotation', relative_rotation);
       // console.log('contact_normal', contact_normal);
 
-
+      // var iamshot = this.name;
       // // tooth.rotation.x = 8;
+      //console.log('col', other_object.name, contact_normal);
+
 
       if(other_object.name == 'bullet') {
-        console.log('collision');
+        //console.log('collision', this);
         // setInterval(function(){ if(tooth.rotation.x >= -1.6) { tooth.rotation.x -= .1;  }} , 10);
         this.material.wireframe = true;
 
       }
-
-
-
   });
 }
 
@@ -410,13 +491,16 @@ var buildLights = function() {
  */
 
 var shoot = function(e) {
+  if(start){
   throwing = true;
 
-  ball.setAngularFactor(new THREE.Vector3( 1, 1, 1 ));
-   ball.setLinearFactor(new THREE.Vector3( 1, 1, 1 ));
-  ball.setLinearVelocity(new THREE.Vector3(0, 700 - e.clientY, -500));
-  ball.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
+  buildBall();
 
+  ball.setAngularFactor(new THREE.Vector3( 1, 1, 1 ));
+  ball.setLinearFactor(new THREE.Vector3( 1, 1, 1 ));
+  ball.setLinearVelocity(new THREE.Vector3(0, 100, -1000));
+  ball.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
+}
 }
 
 
@@ -486,17 +570,74 @@ var rad2deg = function(angle) {
 
 
 
- var updateBullet = function ( event ) {
+ var mousemove = function ( event ) {
 
+  if(start){
+    var movementX = event.movementX       ||
+                  event.mozMovementX    ||
+                  event.webkitMovementX ||
+                  0,
+      movementY = event.movementY       ||
+                  event.mozMovementY    ||
+                  event.webkitMovementY ||
+                  0;
+
+
+  // Print the mouse movement delta values
+  //console.log("movementX=" + movementX, "movementY=" + movementY);
 
     if(!throwing)
     {
-      ball.position.x +=  event.webkitMovementX;
+      //ball.position.x +=  movementX;
+      //setup.rifle.rotation.y += .003;
     }
+
+    if(setup.rifle)
+      setup.rifle.position.x += movementX;
+  }
+}
+
+
+var fullscreenChange = function() {
+  if (document.webkitFullscreenElement === elem ||
+      document.mozFullscreenElement === elem ||
+      document.mozFullScreenElement === elem) { // Older API upper case 'S'.
+    // Element is fullscreen, now we can request pointer lock
+    elem.requestPointerLock = elem.requestPointerLock    ||
+                              elem.mozRequestPointerLock ||
+                              elem.webkitRequestPointerLock;
+    elem.requestPointerLock();
+  }
+}
+
+var pointerLockChange = function() {
+  if (document.mozPointerLockElement === elem ||
+      document.webkitPointerLockElement === elem) {
+    console.log("Pointer Lock was successful.");
+  } else {
+    console.log("Pointer Lock was lost.");
+  }
+}
+
+var pointerLockError = function() {
+  console.log("Error while locking pointer.");
 }
 
 
 
+var lockPointer = function() {
+  console.log('click');
+
+  elem = document.getElementById("container");
+  // Start by going fullscreen with the element. Current implementations
+  // require the element to be in fullscreen before requesting pointer
+  // lock--something that will likely change in the future.
+  elem.requestFullscreen = elem.requestFullscreen    ||
+                           elem.mozRequestFullscreen ||
+                           elem.mozRequestFullScreen || // Older API upper case 'S'.
+                           elem.webkitRequestFullscreen;
+  elem.requestFullscreen();
+}
 
 var onKeyDown = function ( event ) {
 
@@ -508,3 +649,27 @@ var onKeyDown = function ( event ) {
         }
 
 };
+
+
+var buildGun = function() {
+   var loader = new THREE.JSONLoader();
+    loader.load('assets/js/models/rifle.js', function (geometry, mat) {
+            mesh = new THREE.Mesh(geometry, mat[0]);
+
+
+
+            mesh.scale.x = 30;
+            mesh.scale.y = 30;
+            mesh.scale.z = 30;
+            mesh.name = 'rifle';
+
+            mesh.position.set(0, 40, 430);
+            mesh.rotation.x = deg2rad(-10);
+
+
+            setup.rifle = mesh;
+
+            scene.add(mesh);
+
+        });
+}

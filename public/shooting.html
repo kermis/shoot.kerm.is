@@ -11,21 +11,82 @@
     }
 
     #container {
-        border:5px white solid;
-        position: relative;
-        width: auto;
+        position: absolute;
+        width: 100%;
         cursor: pointer;
-        height: 656px;
+        height: 100%;
+        top:0px;
         display: flex;
+    }
+
+    .overlay {
+        position: absolute;
+        width: 100%;
+        height: 40%;
+        top:40%;
+        min-height: 250px;
+        margin-top:-5%;
+        background-color:rgba(204, 0, 51, .6);
+        z-index: 4;
+    }
+
+    .info {
+        color:white;
+        font-family: 'Helvetica';
+
+        margin-top: 50px;
+        text-align: center;
+
+    }
+
+    .info h3 {
+        text-transform: uppercase;
+        font-size: 30px;
+    }
+
+    .info p {
+        font-size: 20px;
+    }
+
+    .info > button {
+        background-color:white;
+        border:none;
+        color:#CC0030;
+        width : 100px;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+        margin-top:20px;
+    }
+
+    .slideUp {
+        top: -40%;
+
+
+        -webkit-transition: all .3s linear;
+-moz-transition: all .3s linear;
+-ms-transition: all .3s linear;
+-o-transition: all .3s linear;
+transition: all .3s linear;
     }
 
     </style>
 </head>
 <body>
 
+     <div class="overlay">
+        <div class="info">
+            <h3>Welcome to Shoot.Kerm.is</h3>
+            <p>Click to shoot :) </p>
+            <button id="shoot" onclick="lockPointer()">SHOOT!</button>
 
+        </div>
+     </div>
+    <!-- <button id="lock" onclick="lockPointer();">Lock it!</button> -->
     <article id="container"><div class="filler"></div></article>
 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="assets/js/libs/three.min.js"></script>
     <script src="assets/js/libs/physi.js"></script>
     <script src="assets/js/libs/stats.min.js"></script>
@@ -37,10 +98,26 @@
         init();
         animate();
 
-        document.addEventListener('click', shoot, false);
-        window.addEventListener( 'resize', onWindowResize, false );
-        document.addEventListener( 'mousemove', updateBullet, false );
-        document.addEventListener( 'keydown', onKeyDown, false );
+
+            document.addEventListener('click', shoot, false);
+            window.addEventListener( 'resize', onWindowResize, false );
+            document.addEventListener( 'mousemove', mousemove, false );
+            document.addEventListener( 'keydown', onKeyDown, false );
+            document.addEventListener('fullscreenchange', fullscreenChange, false);
+            document.addEventListener('mozfullscreenchange', fullscreenChange, false);
+            document.addEventListener('webkitfullscreenchange', fullscreenChange, false);
+            document.addEventListener('pointerlockchange', pointerLockChange, false);
+            document.addEventListener('mozpointerlockchange', pointerLockChange, false);
+            document.addEventListener('webkitpointerlockchange', pointerLockChange, false);
+            document.addEventListener('pointerlockerror', pointerLockError, false);
+            document.addEventListener('mozpointerlockerror', pointerLockError, false);
+            document.addEventListener('webkitpointerlockerror', pointerLockError, false);
+
+
+        $('#shoot').on('click', function() {
+            $('.overlay').addClass('slideUp');
+            start = true;
+        });
 
     </script>
 

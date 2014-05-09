@@ -79,7 +79,7 @@ transition: all .3s linear;
         <div class="info">
             <h3>Welcome to Shoot.Kerm.is</h3>
             <p>Click to shoot :) </p>
-            <button id="shoot" onclick="lockPointer()">SHOOT!</button>
+            <button id="shoot">SHOOT!</button>
 
         </div>
      </div>
@@ -117,6 +117,13 @@ transition: all .3s linear;
         $('#shoot').on('click', function() {
             $('.overlay').addClass('slideUp');
             start = true;
+
+            setTimeout(
+                function() {
+                    lockPointer();
+                },
+                400
+            );
         });
 
     </script>

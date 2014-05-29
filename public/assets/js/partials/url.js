@@ -10,7 +10,7 @@ var url = {
 			if(this.loc.port != undefined && this.loc.port > 1){
 			    this.currentURL = this.loc.protocol + '//' + this.loc.hostname + ':' + this.loc.port;
 			}else{
-			    console.log('else');
+			    // console.log('else');
 			    this.currentURL = this.loc.protocol + '//' + this.loc.hostname;
 			}
 	}

@@ -1,7 +1,10 @@
 var socket = io.connect(url.currentURL);
 
+
 var room = {
+
 	setID : function() {
+
 		/*
 		|------------------------------------------------------------------------------------
 		| Generate a Room ID
@@ -13,7 +16,7 @@ var room = {
 	generateRoomID : function() {
 		/*
 		|------------------------------------------------------------------------------------
-		| Generate a Room ID
+		| Generate a Room ID of 3 chars
 		|------------------------------------------------------------------------------------
 		*/
 			var text = '';
@@ -41,7 +44,7 @@ var room = {
                 if(results == null) {
                 	return '';
                 } else {
-                	console.log('res', results);
+                	//console.log('res', results);
                 	return results[1];
                 }
 	}

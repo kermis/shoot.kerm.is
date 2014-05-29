@@ -1,72 +1,554 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Shoot.Kerm.is</title>
+    <meta charset="UTF-8">
+    <title>Shoot game</title>
 
-	<link rel="stylesheet" href="assets/css/main.css">
+  <style type="text/css">
+
+    body {
+        margin:0px;
+        overflow: hidden;
+    }
+
+  #container {
+        position: absolute;
+        width: 100%;
+        cursor: pointer;
+        height: 100%;
+        top:0px;
+        display: flex;
+    }
+
+
+     .overlay, .level_overlay {
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        top:10%;
+        background-color: rgba(0, 105, 206, .8);
+        z-index: 4;
+    }
+
+    .info {
+        color:white;
+        font-family: 'Helvetica';
+
+        margin-top: 20px;
+        text-align: center;
+
+    }
+
+    .info h3 {
+        text-transform: uppercase;
+        font-size: 30px;
+    }
+
+
+
+    .points, .level, .balls {
+        color:white;
+        font-size: 18px;
+        font-weight: bold;
+        /*padding-top: 10px;*/
+        text-transform: uppercase;
+       /* -webkit-font-smoothing: antialiased;
+        -webkit-transition: all 2s; /* For Safari 3.1 to 6.0 */
+   /*     transition: all 2s;*/
+        position: relative;
+    }
+
+    .level {
+        top: 20%;
+        color : #ffc703;
+        font-size: 25px;
+    }
+
+    .points, .balls {
+        top:40%;
+        padding: 4px;
+    }
+
+    .ready {
+        display: none;
+    }
+
+    .ready p {
+        font-size: 20px;
+    }
+
+    .ready > button, #mouse, .next_level {
+        background-color:white;
+        border:none;
+        color:#CC0030;
+        width : 100px;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: none;
+        margin-top:20px;
+    }
+
+    .slideUp {
+        top: -100%;
+
+
+        -webkit-transition: all .4s linear;
+-moz-transition: all .4s linear;
+-ms-transition: all .4s linear;
+-o-transition: all .4s linear;
+transition: all .4s linear;
+    }
+
+    /*#start {
+        position: absolute;
+        right: 50%;
+        top:0px;
+        z-index: 44;
+    }*/
+
+    #qrcode {
+        z-index: 10;
+        display: block;
+        width: 100px;
+        height: 100px;
+        margin:0 auto;
+        /*position: absolute;*/
+        border: 3px white solid;
+/*        right: 0px*/
+    }
+
+    .power {
+        position: absolute;
+        bottom:0;
+        left: 10px;
+        width: 100px;
+        z-index: 3333;
+        background-color: orange;
+        height : 300px;
+
+background: rgb(255,50,50); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIzMCUiIHN0b3AtY29sb3I9IiNmZjMyMzIiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiMyOGZmNGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNmZjYxMDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY2MTAwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+background: -moz-linear-gradient(top,  rgb(255,50,50) 30%, rgb(40,255,76) 40%, rgb(255,97,0) 50%, rgb(255,97,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(30%,rgb(255,50,50)), color-stop(40%,rgb(40,255,76)), color-stop(50%,rgb(255,97,0)), color-stop(100%,rgb(255,97,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgb(255,50,50) 30%,rgb(40,255,76) 40%,rgb(255,97,0) 50%,rgb(255,97,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgb(255,50,50) 30%,rgb(40,255,76) 40%,rgb(255,97,0) 50%,rgb(255,97,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgb(255,50,50) 30%,rgb(40,255,76) 40%,rgb(255,97,0) 50%,rgb(255,97,0) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgb(255,50,50) 30%,rgb(40,255,76) 40%,rgb(255,97,0) 50%,rgb(255,97,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3232', endColorstr='#ff6100',GradientType=0 ); /* IE6-8 */
+
+    border:2px white solid;
+
+
+/*
+        -webkit-transition: all 400ms ease;
+-moz-transition: all 400ms ease;
+-ms-transition: all 400ms ease;
+-o-transition: all 400ms ease;
+transition: all 400ms ease;*/
+    }
+
+    .powerIndicator {
+        width: 100%;
+        height: 2px;
+        bottom:0px;
+        position: absolute;
+        background-color:white;
+
+           -webkit-transition: all 100ms ease;
+-moz-transition: all 100ms ease;
+-ms-transition: all 100ms ease;
+-o-transition: all 100ms ease;
+transition: all 100ms ease;
+    }
+
+    .preload {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background: #EFEFEF;
+        z-index: 44444;
+    }
+    .percentLoaded {
+        position: absolute;
+        text-align: center;
+        font-size: 8em;
+        width: 100%;
+        left: 0;
+        top: 20%;
+        z-index: 1001;
+    }
+    .progress{
+        width: 0%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #6588D6;
+        z-index: 1000
+    }
+
+    .level_overlay {
+        display: none;
+        height : 50%;
+        top:25%;
+    }
+
+
+
+
+    .totall{
+        width: 300px;
+        height: 150px;
+        margin: 20px;
+        margin-right: -320px;
+        position: absolute;
+        right:0;
+        top:0;
+        text-align: right;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 10pt;
+        line-height: 14px;
+        text-align: center;
+        /*border: solid #a1582b 5px;*/
+        background: url('assets/img/basket-ticket.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        color: #3f0000;
+        -webkit-font-smoothing: antialiased;
+        -webkit-transition: all 2s; /* For Safari 3.1 to 6.0 */
+        transition: all 2s;
+        padding-right: 14px;
+
+
+    }
+    .totall.active{
+        margin-right: 0px;
+        padding-right: 0px;
+    }
+
+    .totall.score {
+       width: 80%;
+        height: 80%;
+        right:10%;
+        top:10%;
+    }
+
+    .totall .next_level {
+        opacity: 0;
+        position: absolute;
+        bottom: 30%;
+        left: 50%;
+        margin-left:-50px;
+        width: 0px;
+        height: 0px;
+    }
+
+    .score .next_level {
+        opacity: 1;
+        width : 100px;
+        height: 40px;
+    }
+
+    </style>
 </head>
 <body>
 
 
-	<div class="container">
-		<div class="logo"></div>
-		<div class="introduction">Sync your phone to your computer to get started.</div>
+        <div class="preload">
+            <div class="percentLoaded">0%</div>
+            <div class="progress"></div>
+        </div>
+
+        <div class="overlay">
+        <div class="info">
+            <h3>Welcome to Shoot.Kerm.is</h3>
 
 
-		<div class="step step-1">
-			<div class="instruction">
-				<div class="left">You are already on a computer.</div>
-				<div class="right">Now grab your smartphone.</div>
-			</div>
-			<button class="button">Next</button>
-		</div>
+            <div class="waiting">
+                <p>Go to </p>
+                <div class="browser"></div>
+                <p>and enter the following code.</p>
+                <div class="code"></div>
+                <p>or scan the QR code.</p>
+                <div id="qrcode"></div>
+                <p>Want to play with your mouse?</p>
+                <button id="mouse">yes!</button>
+            </div>
 
-		<div class="step step-2">
-			<div class="instruction">
-				Open your phone's mobile browser.
-				Chrome works best,
-				but any modern browser will do.
-			</div>
-			<button class="button">Next</button>
-		</div>
+            <div class="ready">
+                <p>Click to shoot :) </p>
+                <button id="start">Let's play!</button>
+            </div>
 
-		<div class="step step-3">
-			<div class="instruction">
-				<div class="up">Enter this web address in your mobile browser : <span class="browser"></span></div>
-				<div class="down">Enter game code : <span class="code"></span></div>
-			</div>
-		</div>
+        </div>
+     </div>
 
-		<div class="step final">
-			<div class="instruction">
-				YOU ARE CONNECTED
-			</div>
-			<button class="button"><a href="/shoot.html">LET'S PLAY</a></button>
-		</div>
-	</div>
+    <article id="container">
+        <div class="filler"></div>
+        <!-- <div class="power"><div class="powerIndicator"></div></div> -->
+
+        <div class="totall">
+            <div class="level"></div>
+            <div class="points"></div>
+            <div class="balls"></div>
+            <button class="next_level">Go to level <span></span></button>
+        </div>
 
 
-	<!-- <p>You are connected to the room : <span id="room"></span></p>
- -->
-	<!-- jQuery stuff -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <div class="level_overlay">
+                <div class="info">
+                    <h3 class="the_level">Wow you finished level <span></span>! Nice job.</h3>
+                    <p class="the_points">U scored <span></span> points</p>
+                    <p class="scored">Scored :  <span></span></p>
+                    <p class="missed">Missed : <span></span></p>
+                    <p class="the_bonus">Bonus : <span>0</span></p>
+                    <button class="next_level">Go to level <span></span></button>
+                </div>
+        </div>
 
-	<!-- Socket.io stuff-->
-	<script src="assets/js/libs/socket.io.min.js"></script>
+    </article>
 
-	<!-- Local stuff -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="assets/js/libs/three.min.js"></script>
+    <script src="assets/js/libs/physi.js"></script>
+    <script src="assets/js/libs/socket.io.min.js"></script>
+    <script src="assets/js/libs/qrcode.js"></script>
+    <script src="assets/js/libs/stats.min.js"></script>
+    <script src="assets/js/libs/dat.gui.min.js"></script>
+    <script src="assets/js/libs/CCapture.min.js"></script>
+    <script src="assets/js/libs/Whammy.js"></script>
 
-	<script src="assets/js/partials/start.js"></script>
-	<script src="assets/js/partials/url.js"></script>
-	<script src="assets/js/partials/room.js"></script>
-	<script src="assets/js/partials/main.js"></script>
+    <script src="assets/js/partials/watch.js"></script>
+    <script src="assets/js/partials/sos.js"></script>
+    <script src="assets/js/partials/url.js"></script>
+    <script src="assets/js/partials/room.js"></script>
+    <script src="assets/js/partials/main.js"></script>
+    <script src="assets/js/partials/physics.js"></script>
+    <script src="assets/js/partials/canwebuildit.js"></script>
+    <script src="assets/js/partials/shoot.js"></script>
+    <script src="assets/js/partials/hitboxes.js"></script>
+    <script src="assets/js/partials/preload.js"></script>
+    <script src="assets/js/partials/levels.js"></script>
+
+    <!-- load fonts -->
+    <script src="assets/fonts/gentilis_bold.typeface.js"></script>
+    <script src="assets/fonts/gentilis_regular.typeface.js"></script>
+    <script src="assets/fonts/optimer_bold.typeface.js"></script>
+    <script src="assets/fonts/optimer_regular.typeface.js"></script>
+    <script src="assets/fonts/helvetiker_bold.typeface.js"></script>
+    <script src="assets/fonts/helvetiker_regular.typeface.js"></script>
+    <script src="assets/fonts/droid_sans_regular.typeface.js"></script>
+    <script src="assets/fonts/droid_sans_bold.typeface.js"></script>
+    <script src="assets/fonts/droid_serif_regular.typeface.js"></script>
+    <script src="assets/fonts/droid_serif_bold.typeface.js"></script>
+
+    <!-- Preload and sound stuff -->
+    <script src="//code.createjs.com/preloadjs-0.4.1.min.js"></script>
+    <script src="//code.createjs.com/soundjs-0.5.2.min.js"></script>
 
 
-	<script>
-		$(function() {
-			start.init();
-		})
-	</script>
+    <script>
+
+
+
+            /**
+             *
+             * Call functions in watch.js
+             *
+             */
+
+
+
+            // document.addEventListener('click', look.theUserIsShooting, false);
+            document.addEventListener('mousedown', look.theUserIsGettingPower, false);
+            document.addEventListener('mouseup', look.theUserIsShooting, false);
+            window.addEventListener( 'resize', look.theWindowIsResizing, false );
+            document.addEventListener( 'mousemove', look.theMouseIsMoving, false );
+            document.addEventListener( 'keydown', look.theKeyIsGoingDown, false );
+
+            document.addEventListener('fullscreenchange', look.theScreenIsGoingFullscreen, false);
+            document.addEventListener('mozfullscreenchange', look.theScreenIsGoingFullscreen, false);
+            document.addEventListener('webkitfullscreenchange', look.theScreenIsGoingFullscreen, false);
+            document.addEventListener('pointerlockchange', look.thePointerIsBeingLocked, false);
+            document.addEventListener('mozpointerlockchange', look.thePointerIsBeingLocked, false);
+            document.addEventListener('webkitpointerlockchange', look.thePointerIsBeingLocked, false);
+            document.addEventListener('pointerlockerror', look.thePointerLockHasGoneWrong, false);
+            document.addEventListener('mozpointerlockerror', look.thePointerLockHasGoneWrong, false);
+            document.addEventListener('webkitpointerlockerror', look.thePointerLockHasGoneWrong, false);
+
+            $('#start').on('click', function() {
+                //look.theUserIsLockingThePointer();
+
+              $('.overlay').addClass('slideUp');
+
+                shoot.controller = 'mobile';
+
+                setTimeout(
+                    function() {
+                        //look.theUserIsLockingThePointer();
+                        shoot.start = true;
+                        $('.totall').addClass('active');
+                    },
+                    400
+                );
+            });
+
+            $('#mouse').on('click', function() {
+
+                 shoot.controller = 'mouse';
+
+                 $('.overlay').addClass('slideUp');
+
+
+
+
+                setTimeout(
+                    function() {
+                        look.theUserIsLockingThePointer();
+                        shoot.start = true;
+                        $('.totall').addClass('active');
+                    },
+                    400
+                );
+            });
+
+            $('.next_level').on('click', function() { // .next_level!!
+
+                if(shoot.level < levels.length)
+                {
+                console.log('click');
+
+                shoot.level++;
+                shoot.totalBalls = levels[shoot.level].totalBalls;
+                shoot.totalPoints = 0;
+                shoot.totalScored = 0;
+                shoot.totalMissed = 0;
+                // yeswecan.build_thecamera();
+                // yeswecan.build_thebasket();
+
+                        reloadScene();
+
+
+                        $('.totall').fadeOut('slow', function() {
+                            $('.totall').removeClass('score').removeClass('active');
+                            shoot.start = true;
+                            $('.totall').fadeIn('slow', function() {
+                                $('.totall').addClass('active');
+                            });
+                        })
+
+                        // $('.level_overlay').fadeOut('slow', function() {
+                        //     shoot.start = true;
+                        //     $('.totall').addClass('active');
+                        // });
+                }
+                else {
+                    alert('You have successfully completed this game.');
+                }
+
+                    });
+
+                var removeObject = [];
+
+                 function reloadScene() {
+
+                    //shoot.init();
+
+                    // console.log('scene before ', scene);
+
+                    $.each(scene.children, function(index, child) {
+
+                        if(child != undefined) {
+
+
+                            if(child.name == 'basketring-physics' || child.name == 'basketring-model' || child.name == 'basketback-model' || child.name == 'basketback-physics' || child.name == 'ball') {
+                            //     console.log('remove');
+                                // scene.remove(child);
+                                removeObject.push(child);
+                            }
+                        }
+
+                    });
+
+
+
+                    for(var i = 0; i < removeObject.length; i++)
+                    {
+                        scene.remove(removeObject[i]);
+
+                    }
+
+
+                    balls = [];
+                    //basketRings = [];
+
+                    console.log('basketRings', basketRings);
+                    basketRings = [];
+                    console.log('basketRings 2', basketRings);
+
+
+
+                    yeswecan.build_thebasket();
+                    yeswecan.build_theball();
+                     console.log('basketRings 3', basketRings);
+
+                     console.log('scene after', scene);
+
+                }
+
+
+                // var changeRingColor = setInterval(function() {
+                //     if(shoot.start) {
+
+                //         if(!shoot.bonusColor) {
+                //             console.log('random');
+                //             shoot.random = Math.floor((Math.random() * basketRings.length));
+                //             shoot.bonusColor = true;
+                //             basketRings[shoot.random].material.color = 0x000000;
+                //             console.log(shoot.random);
+                //         }
+
+                //         setTimeout(function() {
+                //             console.log('remove random points', shoot.random);
+
+                //             basketRings[shoot.random].material.color = 0xCC0030;
+                //             clearInterval(changeRingColor);
+                //             shoot.bonusColor = false;
+
+                //         }, 3000 ) // (Math.random() * 15000) + 4000
+                //     }
+                // }, 1000); // (Math.random() * 50000) + 10000
+
+    </script>
+
+
+    <script type="text/javascript">
+
+
+
+        var qrcode = new QRCode("qrcode", {
+            text: url.currentURL + "/controller.html?roomNumber=" + room.id,
+            width: 100,
+            height: 100,
+            colorDark : "#CC0030",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+
+
+
+
+
+        </script>
+
+
+
+
+
+
 </body>
 </html>

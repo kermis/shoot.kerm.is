@@ -63,7 +63,7 @@
 	io.sockets.on('connection', function(socket) {
 
 		socket.on('message', function(data) {
-			console.log('MESSAGE', data);
+			//console.log('MESSAGE', data);
 		});
 
 		socket.on('room', function(room) {
@@ -73,18 +73,24 @@
 		});
 
 		socket.on('connected_user', function(data) {
-			console.log('connected_user', data);
+			//console.log('connected_user', data);
 			io.sockets.emit('connected_person', data);
 		});
 
-		// socket.on('motiondata', function(data) {
-		// 	console.log('motiondata', roomio);
-		// 	io.sockets.in(roomio).emit('motiondatas', data);
-		// });
+		socket.on('motiondata', function(data) {
+			//console.log('motiondata', roomio, data);
+			io.sockets.in(data.room).emit('motiondatas', data);
+		});
 
 		socket.on('shoot', function(data) {
 			console.log('user is shooting', data);
-			io.sockets.in(data.message).emit('shoot', data);
+			io.sockets.in(data.message).emit('shooting', data);
+		})
+
+		socket.on('power', function(data) {
+			console.log('power');
+			//console.log('user is shooting', data);
+			io.sockets.in(data.message).emit('user_power', data);
 		})
 
 	});
@@ -114,6 +120,6 @@
 			socket.join(roomID);
 		}
 
-		console.log('rooms', rooms);
+		//console.log('rooms', rooms);
 	}
 

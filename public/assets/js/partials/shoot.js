@@ -61,7 +61,7 @@ var shoot = {
 
 
 
-            yeswecan.buildTooth();
+           yeswecan.buildTooth();
 
 
 
@@ -136,7 +136,14 @@ var shoot = {
 
 
 
+            // if(shoot.start) {
+                  // setTimeout(function() {
+                  //       random = Math.ceil(Math.random() * 3);
+                  //       yeswecan.addTooth(0, 0, 0, .7, random);
+                  // }, 2000)
+            // }
 
+            //shoot.moveTargets();
 
       },
 
@@ -209,7 +216,6 @@ var shoot = {
 
                         if(basketRings[i].tooth.rotation.x < helpMe.calculate('rad', -45))
                         {
-                              console.log(basketRings[i].tooth.number);
 
                               // ball.shot = true;
                               basketRings[i].hit = true;
@@ -227,7 +233,6 @@ var shoot = {
             //   capturer.stop();
             //   console.log(videoURL);
             // }, 2000);
-
 
             /**
              *
@@ -263,7 +268,7 @@ var shoot = {
             textGeom.computeBoundingBox();
             var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
-            console.log(basketRings[ringnumber]);
+
             textMesh.position.set( basketRings[ringnumber].tooth.position.x , basketRings[ringnumber].tooth.position.y + 20 , basketRings[ringnumber].tooth.position.z );
             textMesh.name = 'points';
 
@@ -375,16 +380,9 @@ var shoot = {
               for(var i = 0; i < basketRings.length; i++)
                   {
                         basketRings[i].stand.position.x -= basketRings[i].speed;
-                        basketRings[i].tooth.position.x -= basketRings[i].speed;
-
-
                         basketRings[i].stand.__dirtyPosition = true;
-                        basketRings[i].tooth.__dirtyPosition = true;
 
-
-
-
-                        if(basketRings[i].tooth.position.x < -140)
+                        if(basketRings[i].tooth.position.x < -155)
                         {
                               scene.remove(basketRings[i].tooth);
                               scene.remove(basketRings[i].stand);
@@ -440,6 +438,7 @@ var throwing = false;
 
 var ball, basketRing;
 var basketRings = [];
+var firedBullets = [];
 var balls = [];
 
 var stats;

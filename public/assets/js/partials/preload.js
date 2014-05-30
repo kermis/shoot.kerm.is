@@ -45,6 +45,7 @@ function handleComplete() {
 
     setInterval(function() {
         scene.simulate();
+
         shoot.moveTargets();
     }, 1000 / 60);
 

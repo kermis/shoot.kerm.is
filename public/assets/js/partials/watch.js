@@ -7,6 +7,8 @@ var look = {
        */
 
       theWindowIsResizing : function() {
+            console.log('resize');
+
             /**
               *
               * store scene dimensions
@@ -22,8 +24,8 @@ var look = {
              *
              */
 
-            camera.aspect = sceneW / sceneH;
-            camera.updateProjectionMatrix();
+            yeswecan.get_theSceneCam.aspect = sceneW / sceneH;
+            yeswecan.get_theSceneCam.updateProjectionMatrix();
 
             /**
              *
@@ -140,6 +142,10 @@ var look = {
                         ball.shot = true;
                         shoot.reload = true;
 
+                        firedBullets.push(ball);
+
+
+
                         /**
                          *
                          * Play sound when user shot
@@ -243,7 +249,7 @@ var look = {
             if(!ball.shot)
             {
                   if(shoot.controller == 'mobile') {
-                        ball.position.x = x * 5;
+                      ball.position.x += x * 5;
                   }
                   else if(shoot.controller == 'mouse') {
                         ball.position.x += x * 0.9;

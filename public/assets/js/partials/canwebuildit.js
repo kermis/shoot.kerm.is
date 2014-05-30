@@ -110,7 +110,7 @@ var yeswecan = {
               'height' : 4, 'depth' : 38,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posY' :40,
               'posZ' : 400, 'name' : 'row1'
             }
@@ -121,7 +121,7 @@ var yeswecan = {
               'height' : 4, 'depth' : 38,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posY' : 68,
               'posZ' : 370, 'name' : 'row2'
             }
@@ -132,7 +132,7 @@ var yeswecan = {
               'height' : 4, 'depth' : 38,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posY' : 113,
               'posZ' : 346, 'name' : 'row3'
             }
@@ -143,7 +143,7 @@ var yeswecan = {
               'height' : 233, 'depth' : 20,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posX' : -140, 'posY' : 116,
               'posZ' : 453, 'rotY' : -5, 'name' : 'leftSideFront'
             }
@@ -154,7 +154,7 @@ var yeswecan = {
               'height' : 233, 'depth' : 20,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posX' : 140, 'posY' : 116,
               'posZ' : 450, 'rotY' : 5, 'name' : 'rightSideFront'
             }
@@ -165,7 +165,7 @@ var yeswecan = {
               'height' : 300, 'depth' : 20,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posX' : 0, 'posY' : 220,
               'posZ' : 450, 'rotX' : 90, 'rotZ' : 90,  'name' : 'topSideFront'
             }
@@ -176,7 +176,7 @@ var yeswecan = {
               'height' : 200,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : .6, 'friction' : .4,
+              'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posX' : 0, 'posY' : 100,
               'posZ' : 200, 'name' : 'backside'
             }
@@ -376,10 +376,11 @@ var yeswecan = {
                       );
                       break
                     case 3:
-                      tooth   = new Physijs.ConvexMesh(
-                              new THREE.TetrahedronGeometry( 13) ,
+                      tooth   = new Physijs.CylinderMesh(
+                              new THREE.CylinderGeometry( 15, 15, 2, 3, 3),
                               new THREE.MeshPhongMaterial({ map: toothTexure, friction : 1, restitution : 1 })
                       );
+                      tooth.rotation.x = helpMe.calculate('rad', 90);
                       break
                   }
 
@@ -402,11 +403,14 @@ var yeswecan = {
 
 
 
-                scene.addConstraint( constraint );
+              scene.addConstraint( constraint );
 
-                // setTimeout(function() {
-                //   console.log('straint', constraint);
-                // }, 1000);
+                constraint.setLimits(
+                    0, // minimum angle of motion, in radians
+                    -(Math.PI / 2)  // maximum angle of motion, in radians
+                );
+
+
 
                 var teeth = {
                   'stand' : tooth_stand,
@@ -417,7 +421,6 @@ var yeswecan = {
 
                 basketRings.push(teeth);
 
-                console.log(constraint);
 
 
                 // tooth.addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
@@ -506,7 +509,7 @@ var yeswecan = {
             ball.setLinearVelocity(new THREE.Vector3( 0, 0, 0 ));
             ball.setAngularVelocity(new THREE.Vector3( 0, 0, 0 ));
 
-            console.log('ball shot buid', ball.shot);
+            //console.log('ball shot buid', ball.shot);
 
             //ball.addEventListener( 'collision', look.theBallIsBouncing);
 

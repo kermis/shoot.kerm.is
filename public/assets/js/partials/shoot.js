@@ -25,7 +25,7 @@ var shoot = {
              */
 
             shoot.totalBalls = levels[shoot.level].totalBalls;
-            $('.level').text('Level ' + (shoot.level + 1));
+            $('.subtitle').text('Level ' + (shoot.level + 1));
 
 
             /**
@@ -62,6 +62,7 @@ var shoot = {
 
 
            yeswecan.buildTooth();
+           yeswecan.build_theRifle();
 
 
 
@@ -335,8 +336,8 @@ var shoot = {
 
       updateInfo : function() {
 
-            $('.balls').text('Balls : '  + shoot.totalBalls);
-            $('.points').text('Score : ' + shoot.totalPoints);
+            $('.count').text(shoot.totalBalls);
+            $('.score').text(shoot.totalPoints);
 
 
             // if(shoot.totalScored == levels[shoot.level].totalBalls)
@@ -382,7 +383,7 @@ var shoot = {
                         basketRings[i].stand.position.x -= basketRings[i].speed;
                         basketRings[i].stand.__dirtyPosition = true;
 
-                        if(basketRings[i].tooth.position.x < -155)
+                        if(basketRings[i].tooth.position.x < -175)
                         {
                               scene.remove(basketRings[i].tooth);
                               scene.remove(basketRings[i].stand);

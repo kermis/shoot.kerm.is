@@ -73,7 +73,7 @@ var yeswecan = {
               'type' : 'plane', 'width' : 1000,
               'height' : 1000, 'wSegments' : 10,
               'hSegments' : 10, 'color' : 0x00C51F,
-              'transparent' : false, 'opacity' : 1,
+              'transparent' : false, 'opacity' : 0,
               'friction' : .1, 'restitution' : .3,
               'posZ' : 100, 'rotX' : -90, 'name' : 'ground'
             }
@@ -89,8 +89,8 @@ var yeswecan = {
 
             landscape.load('assets/js/models/schietkraam.js', function (mesh) {
 
-                mesh.scale.set(0.25, 0.25, 0.25);
-                mesh.position.set(0, 0, 260);
+                mesh.scale.set(0.32, 0.32, 0.32);
+                mesh.position.set(0, 0, 60); // z = 260
                 mesh.rotation.y = helpMe.calculate('rad', -89);
                 mesh.name = 'schietkraam';
                 scene.add(mesh);
@@ -106,79 +106,79 @@ var yeswecan = {
             //hitboxes.create();
 
             yeswecan_setSomeArguments = {
-              'type' : 'cube', 'width' : 300,
-              'height' : 4, 'depth' : 38,
-              'wSegments' : 10, 'hSegments' : 10,
-              'color' : 0x00FFFF, 'transparent' : true,
-              'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posY' :40,
-              'posZ' : 400, 'name' : 'row1'
-            }
-            this.build_thelowpolystand(yeswecan_setSomeArguments);
-
-            yeswecan_setSomeArguments = {
               'type' : 'cube', 'width' : 350,
-              'height' : 4, 'depth' : 38,
+              'height' : 4, 'depth' : 40,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posY' : 68,
-              'posZ' : 370, 'name' : 'row2'
+              'restitution' : .4, 'posY' :50,
+              'posZ' : 235, 'name' : 'row1'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
             yeswecan_setSomeArguments = {
-              'type' : 'cube', 'width' : 350,
-              'height' : 4, 'depth' : 38,
+              'type' : 'cube', 'width' : 400,
+              'height' : 4, 'depth' : 40,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posY' : 113,
-              'posZ' : 346, 'name' : 'row3'
+              'restitution' : .4, 'posY' : 88,
+              'posZ' : 205, 'name' : 'row2'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
             yeswecan_setSomeArguments = {
-              'type' : 'cube', 'width' : 20,
-              'height' : 233, 'depth' : 20,
+              'type' : 'cube', 'width' : 400,
+              'height' : 4, 'depth' : 40,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posX' : -140, 'posY' : 116,
-              'posZ' : 453, 'rotY' : -5, 'name' : 'leftSideFront'
+              'restitution' : .4, 'posY' : 145,
+              'posZ' : 180, 'name' : 'row3'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
             yeswecan_setSomeArguments = {
-              'type' : 'cube', 'width' : 20,
-              'height' : 233, 'depth' : 20,
+              'type' : 'cube', 'width' : 30,
+              'height' : 300, 'depth' : 30,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posX' : 140, 'posY' : 116,
-              'posZ' : 450, 'rotY' : 5, 'name' : 'rightSideFront'
+              'restitution' : .4, 'posX' : -175, 'posY' : 147,
+              'posZ' : 310, 'rotY' : -5, 'name' : 'leftSideFront'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
             yeswecan_setSomeArguments = {
-              'type' : 'cube', 'width' : 20,
-              'height' : 300, 'depth' : 20,
+              'type' : 'cube', 'width' : 30,
+              'height' : 300, 'depth' : 30,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
-              'restitution' : .4, 'posX' : 0, 'posY' : 220,
-              'posZ' : 450, 'rotX' : 90, 'rotZ' : 90,  'name' : 'topSideFront'
+              'restitution' : .4, 'posX' : 175, 'posY' : 147,
+              'posZ' : 310, 'rotY' : 5, 'name' : 'rightSideFront'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
             yeswecan_setSomeArguments = {
-              'type' : 'plane', 'width' : 300,
-              'height' : 200,
+              'type' : 'cube', 'width' : 30,
+              'height' : 350, 'depth' : 30,
+              'wSegments' : 10, 'hSegments' : 10,
+              'color' : 0x00FFFF, 'transparent' : true,
+              'opacity' : 0, 'friction' : .4,
+              'restitution' : .4, 'posX' : 0, 'posY' : 280,
+              'posZ' : 310, 'rotX' : 90, 'rotZ' : 90,  'name' : 'topSideFront'
+            }
+            this.build_thelowpolystand(yeswecan_setSomeArguments);
+
+            yeswecan_setSomeArguments = {
+              'type' : 'plane', 'width' : 400,
+              'height' : 300,
               'wSegments' : 10, 'hSegments' : 10,
               'color' : 0x00FFFF, 'transparent' : true,
               'opacity' : 0, 'friction' : .4,
               'restitution' : .4, 'posX' : 0, 'posY' : 100,
-              'posZ' : 200, 'name' : 'backside'
+              'posZ' : 0, 'name' : 'backside'
             }
             this.build_thelowpolystand(yeswecan_setSomeArguments);
 
@@ -267,6 +267,19 @@ var yeswecan = {
 
 
 
+      build_theRifle: function() {
+            var rifle = new THREE.ObjectLoader();
+
+                  rifle.load('assets/js/models/rifle.js', function (mesh) {
+
+                      mesh.scale.set(20, 20, 20);
+                      mesh.position.set(0, 50, 600);
+                      shoot.rifle = mesh;
+                      //mesh.rotation.x = helpMe.calculate('rad', -10);
+                      scene.add(mesh);
+
+                  });
+      },
 
 
 
@@ -316,7 +329,7 @@ var yeswecan = {
           if(shoot.start)
           {
             random = Math.ceil(Math.random() * 3);
-            yeswecan.addTooth(i, 30, 30, .6, random);
+            yeswecan.addTooth(i, 37, 30, .6, random);
             i++;
           }
         }, 1500);
@@ -326,7 +339,7 @@ var yeswecan = {
           if(shoot.start)
           {
             random = Math.ceil(Math.random() * 3);
-            yeswecan.addTooth(i, 75, 50, .8, random);
+            yeswecan.addTooth(i, 95, 50, .8, random);
             i++;
           }
         }, 1700);
@@ -346,11 +359,11 @@ var yeswecan = {
 
                 var tooth_stand = new Physijs.BoxMesh(
                   new THREE.CubeGeometry( 35, 5, 2, 3, 3, 3),
-                  new THREE.MeshBasicMaterial({ color : 0x0000FF, transparent : true, opacity : .1}),
+                  new THREE.MeshBasicMaterial({ color : 0x0000FF, transparent : true, opacity : 0}),
                   0
                 );
 
-                tooth_stand.position.set( 140, 40 + y, 403 - z); // 35 - (35 * i)
+                tooth_stand.position.set( 180, 50 + y, 233 - z); // 35 - (35 * i)
                 scene.add(tooth_stand);
 
 
@@ -385,7 +398,7 @@ var yeswecan = {
                   }
 
 
-                tooth.position.set( 140 , 55 + y, 400 - z); // 35 - (35 * i)
+                tooth.position.set( 180 , 65 + y, 230 - z); // 35 - (35 * i)
                 tooth.category = 'tooth';
                 tooth.name = 'tooth';
 
@@ -489,11 +502,19 @@ var yeswecan = {
             );
 
             ball = new Physijs.SphereMesh(
-                  new THREE.SphereGeometry( 3, 10, 7),
+                  new THREE.SphereGeometry( 2.5, 10, 7),
                   ballMaterial
             );
 
-            ball.position.set(0, 50, 600);
+            // ball.position.set(0, 50, 600);
+            if(shoot.rifle)
+            {
+              ball.position.set(shoot.rifle.position.x, shoot.rifle.position.y + 32, shoot.rifle.position.z - 175);
+            }
+            else {
+              ball.position.set(0, 82, 425 ); // ball.position.set(0, 50, 600 );
+            }
+
             ball.receiveShadow = true;
             ball.rotation.x = helpMe.calculate('rad', -85);
             ball.name = "ball";

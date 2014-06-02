@@ -36,62 +36,6 @@ var look = {
             renderer.setSize( sceneW, sceneH );
       },
 
-      /**
-       *
-       * The user is clicking / touching his mouse / smartphone to get power
-       *
-       */
-
-      theUserIsGettingPower : function() {
-
-            if(shoot.start)
-            {
-                  if(!ball.shot) {
-                        shoot.power = 0;
-                        shoot.way = 'up';
-
-                        shoot.powerCheck = setInterval(function() {
-
-                              if(shoot.way == 'up') {
-                                    if(shoot.power < 10) {
-                                        shoot.power++;
-                                    }
-                                    else {
-                                        shoot.way = 'down';
-                                    }
-                              }
-
-                              if(shoot.way == 'down') {
-                                    if(shoot.power > 1) {
-                                        shoot.power--;
-                                    }
-                                    else {
-                                        shoot.way = 'up';
-                                        shoot.power++;
-                                    }
-                              }
-
-
-
-                              if(shoot.power <= 5) {
-                                shoot.color = 'orange';
-                              }
-
-                              if(shoot.power == 6 ) {
-                                shoot.color = 'green';
-                              }
-
-                              if(shoot.power >= 7) {
-                                shoot.color = 'red';
-                              }
-
-
-                              $('.powerIndicator').css({ 'bottom' : 30 * shoot.power});
-
-                        }, 250);
-                  }
-            }
-      },
 
       /**
        *
@@ -101,7 +45,6 @@ var look = {
 
       theUserIsShooting : function(event) {
 
-            clearInterval(shoot.powerCheck);
 
 
             if(shoot.start) {
@@ -112,13 +55,13 @@ var look = {
 
                   if(shoot.controller == 'mobile') {
                         x =  (event.x - sceneW)+ sceneW /2;
-                        y = 100 * mobile.power;
-                        z = -550;
+                        y = 0;
+                        z = -1400;
                   }
                   else if(shoot.controller == 'mouse') {
-                        x = (event.x - sceneW)+ sceneW /2;
-                        y = 50; //100 * shoot.power;
-                        z = -1250;
+                        x = 0; //(event.x - sceneW)+ sceneW /2;
+                        y = 0; //100 * shoot.power;
+                        z = -1400;
                   }
                   else if(shoot.controller == 'leap') {
 
@@ -250,16 +193,23 @@ var look = {
             {
                   if(shoot.controller == 'mobile') {
                       ball.position.x += x * 5;
+                      shoot.rifle.position.x += x * 5;
                   }
                   else if(shoot.controller == 'mouse') {
                         ball.position.x += x * 0.9;
                         ball.position.y -= y * 0.9;
+
+                        shoot.rifle.position.x += x * 0.9;
+                        shoot.rifle.position.y -= y * 0.9;
+
                   }
 
                   ball.__dirtyPosition = true;
+                   shoot.rifle.__dirtyPosition = true;
             }
             else {
                   ball.__dirtyPosition = false;
+
             }
 
       },

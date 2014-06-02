@@ -39,7 +39,7 @@ $(function() {
 
 
 function handleComplete() {
-    $('.preload').delay(10).fadeOut('slow');
+     $('.overlay').delay(10).fadeOut('slow');
     shoot.init();
     shoot.animate();
 

@@ -8,7 +8,7 @@ var levels = [
 
 
     {
-        'totalBalls' : 1000,
+        'totalBalls' : 300000,
         'pointsPerGoal' : 10,
         'bonusPoints' : 30,
         'totalRings' : {

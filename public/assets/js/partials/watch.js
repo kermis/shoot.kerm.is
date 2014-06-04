@@ -192,8 +192,11 @@ var look = {
             if(!ball.shot)
             {
                   if(shoot.controller == 'mobile') {
-                      ball.position.x += x * 5;
-                      shoot.rifle.position.x += x * 5;
+                      ball.position.x += x * 0.6;
+                      shoot.rifle.position.x += x * 0.6;
+
+                      // ball.position.y = y * 0.6;
+                      // shoot.rifle.position.y = y * 0.6;
                   }
                   else if(shoot.controller == 'mouse') {
                         ball.position.x += x * 0.9;

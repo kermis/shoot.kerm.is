@@ -73,7 +73,8 @@ ValueBuffer.prototype.sum = function() {
   updateRollGesture(tiltZAxis);
  }
 
-window.addEventListener('deviceorientation', updateOrientation, false);
+
+//window.addEventListener('deviceorientation', updateOrientation, false);
 
 
 var tiltBuffer = new ValueBuffer(10);

@@ -80,6 +80,14 @@ var shoot = {
 
             // });
 
+            /**
+             *
+             * Leap motion
+             *
+             */
+
+            leap.init();
+
       },
 
       /**

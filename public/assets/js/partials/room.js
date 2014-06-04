@@ -11,6 +11,7 @@ var room = {
 		|------------------------------------------------------------------------------------
 		*/
 			this.id = this.generateRoomID();
+                                   this.id.toUpperCase();
 	},
 
 	generateRoomID : function() {
@@ -32,7 +33,7 @@ var room = {
 
 	getID : function() {
 		var id = room.queryParam('roomNumber');
-		return id;
+		return id.toUpperCase();
 	},
 
 	queryParam : function(name) {

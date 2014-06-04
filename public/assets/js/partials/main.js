@@ -9,7 +9,7 @@ $(function() {
 
 
     $('.browser').html(url.currentURL + '/connect.html');
-    $('.code').html(room.id);
+    $('.room_id').html(room.id);
 });
 
 
@@ -55,19 +55,18 @@ room.setID();
           console.log('A new user (mobile) is connected');
            if(room.id == data)
            {
-                $('.waiting').fadeOut(400, function() {
-                  $('.ready').fadeIn(400);
-                });
 
-                mobile.connected = true;
+
+                shoot.start = true;
+
+                            $('.info').fadeOut();
+                            //look.theUserIsLockingThePointer();
+                            $('.info-score').addClass('active');
+
            }
       });
 
       socket.on('shooting', function(data) {
-        console.log('shoot', data.power);
-        //shoot();
-
-        mobile.power = data.power
 
         look.theUserIsShooting(mobile.position.gamma, mobile.position.beta);
 

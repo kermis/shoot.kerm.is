@@ -39,7 +39,10 @@ $(function() {
 
 
 function handleComplete() {
-     $('.overlay').delay(10).fadeOut('slow');
+     $('.overlay').delay(10).fadeOut('slow', function() {
+        $('.info').addClass('slide_down');
+     });
+
     shoot.init();
     shoot.animate();
 

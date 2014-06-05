@@ -369,8 +369,8 @@ var yeswecan = {
 
 
                  var toothTexure = THREE.ImageUtils.loadTexture( 'assets/img/target.jpg' );
-                  toothTexure.wrapS =toothTexure.wrapT = THREE.RepeatWrapping;
-                  toothTexure.repeat.set( 0, 1);
+                  toothTexure.wrapS = toothTexure.wrapT = THREE.RepeatWrapping;
+                  toothTexure.repeat.set( 1, 1);
 
                   var tooth;
 

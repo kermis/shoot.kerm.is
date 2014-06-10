@@ -424,17 +424,86 @@
 
                     $('.play').on('click', function(){
                             shoot.start = true;
+                            shoot.infoVisible = false;
 
-                            $('.info').fadeOut();
+                            shoot.rendering = true;
+
+                            //$('.info').fadeOut();
+                            $('.info').removeClass('slide_down');
                             //look.theUserIsLockingThePointer();
                             $('.info-score').addClass('active');
+
+                            //shoot.addTargets();
+
+                            scoreTick();
                     })
 
                     // $(document).on('click', '.next-level-button', function(){
                     //     game.nextLevel();
                     // })
-                })
+            })
 
+
+
+                function scoreTick() {
+                    //ticks once a second for the score, checks for remaining time
+                    // if (timeRemaining == 0) {
+                    //     game.endGame();
+                    // }
+
+
+                    // if (shoot.start) {
+
+                        // timeRemaining -= 1;
+                        // game.updateScoreInfo();
+
+
+                        //
+
+
+
+
+
+                        setTimeout(function() {
+                            if(shoot.start){
+                                 // console.log('add target', t);
+                                 //    t++;
+                                   requestAnimationFrame(shoot.addTargets);
+                                    console.log('add target');
+                                scoreTick();
+                            }
+                        }, levels[shoot.level].speed);
+
+                }
+
+
+
+
+                $(window).focus(function() {
+                        shoot.start = true;
+                        shoot.rendering = true;
+
+
+                        /**
+                         *
+                         * Check if we pressed play button and info overlay is gone
+                         *
+                         */
+
+
+                        if(!shoot.infoVisible)
+                        {
+                            scoreTick();
+                        }
+
+                }).blur(function() {
+                        console.log('stop render');
+                        shoot.rendering = false;
+                        shoot.start = false;
+                });
+
+                console.log('shoot', performance.now());
+                console.log('shoot', performance.now());
         </script>
 
 

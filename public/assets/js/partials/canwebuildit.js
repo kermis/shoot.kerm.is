@@ -312,37 +312,34 @@ var yeswecan = {
 
       buildTooth :  function() {
 
-        var random;
+            // var random;
 
-        i = 0;
-        setInterval(function() {
-          if(shoot.start)
-          {
-            random = Math.ceil(Math.random() * 3);
-            yeswecan.addTooth(i, 0, 0, .7, random);
-            i++;
-          }
-        }, 1300);
-
-
-        setInterval(function() {
-          if(shoot.start)
-          {
-            random = Math.ceil(Math.random() * 3);
-            yeswecan.addTooth(i, 37, 30, .6, random);
-            i++;
-          }
-        }, 1500);
+            // i = 0;
+            // setInterval(function() {
+            //       if (shoot.start) {
+            //             random = Math.ceil(Math.random() * 3);
+            //             yeswecan.addTooth(i, 0, 0, .7, random);
+            //             i++;
+            //       }
+            // }, 1300);
 
 
-        setInterval(function() {
-          if(shoot.start)
-          {
-            random = Math.ceil(Math.random() * 3);
-            yeswecan.addTooth(i, 95, 50, .8, random);
-            i++;
-          }
-        }, 1700);
+            // setInterval(function() {
+            //       if (shoot.start) {
+            //             random = Math.ceil(Math.random() * 3);
+            //             yeswecan.addTooth(i, 37, 30, .6, random);
+            //             i++;
+            //       }
+            // }, 1500);
+
+
+            // setInterval(function() {
+            //       if (shoot.start) {
+            //             random = Math.ceil(Math.random() * 3);
+            //             yeswecan.addTooth(i, 95, 50, .8, random);
+            //             i++;
+            //       }
+            // }, 1700);
 
 
       },

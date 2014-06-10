@@ -6,9 +6,16 @@ var shoot = {
        *
        */
 
-      level : 0, reload : false, start : false,
-      controller : 'mouse', totalPoints : 0,
-      totalScored : 0, totalMissed : 0,
+      level: 1,
+      reload: false,
+      start: false,
+      controller: 'mouse',
+      totalPoints: 0,
+      totalScored: 0,
+      totalMissed: 0,
+      rendering: true,
+      infoVisible: true,
+
 
       /**
        *
@@ -16,7 +23,7 @@ var shoot = {
        *
        */
 
-      init : function() {
+      init: function() {
 
             /**
              *
@@ -61,8 +68,8 @@ var shoot = {
 
 
 
-           yeswecan.buildTooth();
-           yeswecan.build_theRifle();
+            yeswecan.buildTooth();
+            yeswecan.build_theRifle();
 
 
 
@@ -96,16 +103,26 @@ var shoot = {
        *
        */
 
-      animate : function() {
+      animate: function() {
             //scene.simulate(); // run physics
-            renderer.render(scene, yeswecan.get_theSceneCam); // render the scene
-            stats.update(); // update the stats
+
+            if (shoot.rendering) {
+                  shoot.render();
+            }
+
             requestAnimationFrame(shoot.animate); // continue animating
-
-
-
             //capturer.capture( renderer.domElement );
 
+
+
+
+      },
+
+      render: function() {
+
+            renderer.render(scene, yeswecan.get_theSceneCam); // render the scene
+            stats.update(); // update the stats
+            scene.simulate();
 
             /**
              *
@@ -146,14 +163,13 @@ var shoot = {
 
 
             // if(shoot.start) {
-                  // setTimeout(function() {
-                  //       random = Math.ceil(Math.random() * 3);
-                  //       yeswecan.addTooth(0, 0, 0, .7, random);
-                  // }, 2000)
+            // setTimeout(function() {
+            //       random = Math.ceil(Math.random() * 3);
+            //       yeswecan.addTooth(0, 0, 0, .7, random);
+            // }, 2000)
             // }
 
             //shoot.moveTargets();
-
       },
 
 
@@ -163,7 +179,7 @@ var shoot = {
        *
        */
 
-      createStats : function() {
+      createStats: function() {
 
             stats = new Stats();
             stats.domElement.style.position = 'absolute';
@@ -173,7 +189,7 @@ var shoot = {
 
       },
 
-      checkCollision : function() {
+      checkCollision: function() {
 
             /**
              *
@@ -202,7 +218,7 @@ var shoot = {
             //       counter++;
             // }
 
-            for(var i = 0; i < basketRings.length; i++) {
+            for (var i = 0; i < basketRings.length; i++) {
 
                   // basketRingPos = new THREE.Vector3(
                   //       basketRings[i].position.x,
@@ -221,10 +237,9 @@ var shoot = {
 
                   //console.log('basketRings[i].rotation.x', basketRings[i].rotation.x, 'rad', helpMe.calculate('rad', -45));
                   //console.log('ball.shot', ball.shot);
-                   if(!basketRings[i].hit ) {
+                  if (!basketRings[i].hit) {
 
-                        if(basketRings[i].tooth.rotation.x < helpMe.calculate('rad', -45))
-                        {
+                        if (basketRings[i].tooth.rotation.x < helpMe.calculate('rad', -45)) {
 
                               // ball.shot = true;
                               basketRings[i].hit = true;
@@ -236,7 +251,7 @@ var shoot = {
 
       },
 
-      score : function(ringnumber) {
+      score: function(ringnumber) {
             // setTimeout(function() {
             //   var videoURL = capturer.save();
             //   capturer.stop();
@@ -260,25 +275,40 @@ var shoot = {
              *
              */
 
-            var materialFront = new THREE.MeshBasicMaterial( { color: 0xCC0030, transparent : true, opacity : 1 } );
-            var materialSide = new THREE.MeshBasicMaterial( { color: 0x00ff00, transparent : true, opacity : 1 } );
-            var materialArray = [ materialFront, materialSide ];
-            var textGeom = new THREE.TextGeometry( levels[shoot.level].pointsPerGoal,
-            {
-                  size: 10, height: 10, curveSegments: 3,
-                  font: "helvetiker", weight: "bold", style: "normal",
-                  bevelThickness: 0, bevelSize: 0, bevelEnabled: false,
-                  material: 0, extrudeMaterial: 1
+            var materialFront = new THREE.MeshBasicMaterial({
+                  color: 0xCC0030,
+                  transparent: true,
+                  opacity: 1
+            });
+            var materialSide = new THREE.MeshBasicMaterial({
+                  color: 0x00ff00,
+                  transparent: true,
+                  opacity: 1
+            });
+            var materialArray = [materialFront, materialSide];
+            var textGeom = new THREE.TextGeometry(levels[shoot.level].pointsPerGoal, {
+                  size: 10,
+                  height: 10,
+                  curveSegments: 3,
+                  font: "helvetiker",
+                  weight: "bold",
+                  style: "normal",
+                  bevelThickness: 0,
+                  bevelSize: 0,
+                  bevelEnabled: false,
+                  material: 0,
+                  extrudeMaterial: 1
             });
 
             var textMaterial = new THREE.MeshFaceMaterial(materialArray);
-            var textMesh = new THREE.Mesh(textGeom, textMaterial );
+            var textMesh = new THREE.Mesh(textGeom, textMaterial);
 
             textGeom.computeBoundingBox();
             var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
 
-            textMesh.position.set( basketRings[ringnumber].tooth.position.x , basketRings[ringnumber].tooth.position.y + 20 , basketRings[ringnumber].tooth.position.z );
+            //textMesh.position.set(basketRings[ringnumber].tooth.position.x, basketRings[ringnumber].tooth.position.y + 20, basketRings[ringnumber].tooth.position.z);
+            textMesh.position.set(0, 80, 300);
             textMesh.name = 'points';
 
             scene.add(textMesh);
@@ -299,7 +329,7 @@ var shoot = {
                         textMesh.material.materials[0].opacity -= .1;
                         textMesh.material.materials[1].opacity -= .1;
 
-                        if(textMesh.material.materials[0].opacity == 0 && textMesh.material.materials[1].opacity == 0) {
+                        if (textMesh.material.materials[0].opacity == 0 && textMesh.material.materials[1].opacity == 0) {
                               clearInterval(animateUp);
                               clearInterval(fadeOut);
                               scene.remove(textMesh);
@@ -315,34 +345,30 @@ var shoot = {
        */
 
 
-      removeABall : function() {
+      removeABall: function() {
 
             var i = 0;
 
-            $.each(balls, function( index, basketball ) {
+            $.each(balls, function(index, basketball) {
 
-                  if(i == 0) {
+                  if (i == 0) {
 
-                    if(basketball.shot)
-                    {
-                      if( basketball.position.z < 100
-                          && basketball.position.y< 50
-                          && basketball.position.x > -250
-                          && basketball.position.x < 250) {
+                        if (basketball.shot) {
+                              if (basketball.position.z < 100 && basketball.position.y < 50 && basketball.position.x > -250 && basketball.position.x < 250) {
 
-                        scene.remove(basketball);
-                        balls.splice(index, 1);
-                        i++
+                                    scene.remove(basketball);
+                                    balls.splice(index, 1);
+                                    i++
 
-                      }
-                    }
+                              }
+                        }
 
                   }
 
             });
       },
 
-      updateInfo : function() {
+      updateInfo: function() {
 
             $('.count').text(shoot.totalBalls);
             $('.score').text(shoot.totalPoints);
@@ -358,23 +384,20 @@ var shoot = {
 
       },
 
-      animateRings : function() {
-            if(levels[shoot.level].animate.position == 'up') {
-                  if(basketRings[levels[shoot.level].animate.ring].position.y < 200) {
+      animateRings: function() {
+            if (levels[shoot.level].animate.position == 'up') {
+                  if (basketRings[levels[shoot.level].animate.ring].position.y < 200) {
                         basketRings[levels[shoot.level].animate.ring].position.y += 0.5;
-                  }
-                  else {
+                  } else {
                         basketRings[levels[shoot.level].animate.ring].position.y -= 0.5;
                         levels[shoot.level].animate.position = 'down';
                   }
             }
 
-            if(levels[shoot.level].animate.position == 'down')
-            {
-                  if(basketRings[levels[shoot.level].animate.ring].position.y > levels[shoot.level].animate.length) {
+            if (levels[shoot.level].animate.position == 'down') {
+                  if (basketRings[levels[shoot.level].animate.ring].position.y > levels[shoot.level].animate.length) {
                         basketRings[levels[shoot.level].animate.ring].position.y -= 0.5;
-                  }
-                  else {
+                  } else {
                         basketRings[levels[shoot.level].animate.ring].position.y += 0.5;
                         levels[shoot.level].animate.position = 'up';
                   }
@@ -383,39 +406,57 @@ var shoot = {
             basketRings[levels[shoot.level].animate.ring].__dirtyPosition = true;
       },
 
-      moveTargets : function() {
+      moveTargets: function() {
 
 
-              for(var i = 0; i < basketRings.length; i++)
-                  {
-                        basketRings[i].stand.position.x -= basketRings[i].speed;
-                        basketRings[i].stand.__dirtyPosition = true;
+            for (var i = 0; i < basketRings.length; i++) {
+                  basketRings[i].stand.position.x -= basketRings[i].speed;
+                  basketRings[i].stand.__dirtyPosition = true;
 
-                        if(basketRings[i].tooth.position.x < -175)
-                        {
-                              scene.remove(basketRings[i].tooth);
-                              scene.remove(basketRings[i].stand);
-                              scene.remove(basketRings[i].constraint);
-                              basketRings.splice(i, 1);
-                        }
+                  if (basketRings[i].tooth.position.x < -175) {
+                        scene.remove(basketRings[i].tooth);
+                        scene.remove(basketRings[i].stand);
+                        scene.remove(basketRings[i].constraint);
+                        basketRings.splice(i, 1);
                   }
+            }
+      },
+
+      addTargets: function() {
+
+            if (shoot.start) {
+
+
+                  // timeRemaining -= 1;
+                  //game.updateScoreInfo();
+
+                  var random = Math.ceil(Math.random() * 2);
+                  var place = Math.ceil(Math.random() * 3);
+                  console.log('random', random, t);
+
+                  switch (place) {
+                        case 1:
+                              yeswecan.addTooth(t, 0, 0, .7, random);
+                              break;
+                        case 2:
+                              yeswecan.addTooth(t, 37, 30, .6, random);
+                              //       break;
+                              // case 3:
+                              //       yeswecan.addTooth(t, 95, 50, .8, random);
+                              //       break;
+                  }
+
+
+                  t++;
+            }
+
+            // setTimeout(function() {
+            //       if (shoot.start) {
+            //             shoot.addTargets();
+            //       }
+            // }, 1000)
       }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -450,6 +491,7 @@ var basketRings = [];
 var firedBullets = [];
 var balls = [];
 
+var t = 0;
 var stats;
 
 
@@ -460,4 +502,4 @@ var fullscreenElement;
 // var capturer = new CCapture( { // FOR CAPTURING A REPLAY
 //     framerate: 24
 // } );
-var  counter = 0;
+var counter = 0;

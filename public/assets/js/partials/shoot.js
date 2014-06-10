@@ -106,14 +106,33 @@ var shoot = {
       animate: function() {
             //scene.simulate(); // run physics
 
-            if (shoot.rendering) {
-                  shoot.render();
-            }
-
-            requestAnimationFrame(shoot.animate); // continue animating
+             requestAnimationFrame(shoot.animate); // continue animating
             //capturer.capture( renderer.domElement );
 
+            // if (shoot.rendering) {
+            //       shoot.render();
+            // }
 
+            shoot.render();
+            shoot.moveTargets();
+            scene.simulate();
+
+
+
+            counter++;
+
+            if(counter == 60){
+              setTimeout(function() {
+                            if(shoot.start){
+                                 // console.log('add target', t);
+                                 //    t++;
+                                   requestAnimationFrame(shoot.addTargets);
+                                    console.log('add target');
+                                scoreTick();
+                            }
+                        }, levels[shoot.level].speed/60);
+              counter = 0;
+            }
 
 
       },
@@ -122,7 +141,7 @@ var shoot = {
 
             renderer.render(scene, yeswecan.get_theSceneCam); // render the scene
             stats.update(); // update the stats
-            scene.simulate();
+
 
             /**
              *
@@ -217,6 +236,7 @@ var shoot = {
             // console.log('basketrings', basketRings, basketRings.length);
             //       counter++;
             // }
+
 
             for (var i = 0; i < basketRings.length; i++) {
 
@@ -420,6 +440,7 @@ var shoot = {
                         basketRings.splice(i, 1);
                   }
             }
+
       },
 
       addTargets: function() {

@@ -135,7 +135,9 @@ var look = {
                                                 volume: .3
                                           }); // #PLAY SOUND
 
-                                          yeswecan.build_theball();
+                                          setTimeout(function(){ // set a timeout of 0 so we don't halt execution
+                                                yeswecan.build_theball();
+                                          },0)
                                           shoot.reload = false;
                                     }
 

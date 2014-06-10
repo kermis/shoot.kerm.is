@@ -464,15 +464,15 @@
 
 
 
-                        setTimeout(function() {
-                            if(shoot.start){
-                                 // console.log('add target', t);
-                                 //    t++;
-                                   requestAnimationFrame(shoot.addTargets);
-                                    console.log('add target');
-                                scoreTick();
-                            }
-                        }, levels[shoot.level].speed);
+                        // setTimeout(function() {
+                        //     if(shoot.start){
+                        //          // console.log('add target', t);
+                        //          //    t++;
+                        //            requestAnimationFrame(shoot.addTargets);
+                        //             console.log('add target');
+                        //         scoreTick();
+                        //     }
+                        // }, levels[shoot.level].speed);
 
                 }
 
@@ -495,15 +495,27 @@
                         {
                             scoreTick();
                         }
+                        // for (var i = 0; i < basketRings.length; i++) {
+                        //     basketRings[i].speed = blockSpeed;
+                        // };
 
                 }).blur(function() {
                         console.log('stop render');
                         shoot.rendering = false;
                         shoot.start = false;
+
+                        // for (var i = 0; i < basketRings.length; i++) {
+                        //     blockSpeed = basketRings[i].speed;
+                        //     basketRings[i].speed = 0;
+                        //     // basketRings[i].__dirtyposition = false;
+                        //     console.log(basketRings);
+                        // };
                 });
 
                 console.log('shoot', performance.now());
                 console.log('shoot', performance.now());
+
+                // var blockSpeed = 0.7;
         </script>
 
 

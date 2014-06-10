@@ -485,18 +485,18 @@ var yeswecan = {
             shoot.power = 0;
             shoot.way = 'up';
 
+            // var ballTexture = ballTexture.clone();
+            // var ballTexture = THREE.ImageUtils.loadTexture( 'assets/img/basket.png' );
+            // ballTexture.wrapS =ballTexture.wrapT = THREE.RepeatWrapping;
+            // ballTexture.repeat.set( 1, 0 );
 
-            var ballTexture = THREE.ImageUtils.loadTexture( 'assets/img/basket.png' );
-            ballTexture.wrapS =ballTexture.wrapT = THREE.RepeatWrapping;
-            ballTexture.repeat.set( 1, 0 );
 
 
-
-            var ballMaterial = Physijs.createMaterial (
-                new THREE.MeshBasicMaterial( { map : ballTexture, color: 0xff8000 }),
-                1,
-                0
-            );
+            // var ballMaterial = Physijs.createMaterial (
+            //     new THREE.MeshBasicMaterial( { map : ballTexture, color: 0xff8000 }),
+            //     1,
+            //     0
+            // );
 
             ball = new Physijs.SphereMesh(
                   new THREE.SphereGeometry( 2.5, 10, 7),
@@ -548,3 +548,13 @@ var yeswecan = {
       }
 
 }
+
+var ballTexture = THREE.ImageUtils.loadTexture( 'assets/img/basket.png' );
+            ballTexture.wrapS =ballTexture.wrapT = THREE.RepeatWrapping;
+            ballTexture.repeat.set( 1, 0 );
+
+ var ballMaterial = Physijs.createMaterial (
+                new THREE.MeshBasicMaterial( { map : ballTexture, color: 0xff8000 }),
+                1,
+                0
+            );

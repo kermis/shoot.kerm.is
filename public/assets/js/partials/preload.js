@@ -46,11 +46,11 @@ function handleComplete() {
     shoot.init();
     shoot.animate();
 
-    setInterval(function() {
-        scene.simulate();
+    // setInterval(function() {
+    //     // scene.simulate();
 
-        shoot.moveTargets();
-    }, 1000 / 60);
+
+    // }, 1000 / 60);
 
 }
 

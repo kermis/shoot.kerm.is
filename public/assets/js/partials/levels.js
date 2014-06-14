@@ -9,68 +9,8 @@ var levels = [
 
       {
             'totalBalls': 20,
-            'pointsPerGoal': 10,
-            'bonusPoints': 30,
-            'speed': 2000,
-            'totalRings': {
-                  'ring': [{
-                        'physics': {
-                              'color': 0x00FF00,
-                              'transparent': true,
-                              'opacity': 1,
-                              'radius': 27,
-                              'tube': 3,
-                              'segmentsR': 7,
-                              'segmentsT': 100,
-                              'posX': 0,
-                              'posY': 180,
-                              'posZ': -30,
-                              'rotX': -90,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketring-physics'
-                        },
-                        'model': {
-                              'scale': 0.25,
-                              'posX': 0,
-                              'posY': 180,
-                              'posZ': -30,
-                              'rotX': false,
-                              'rotY': 10,
-                              'rotZ': false,
-                              'color': 0xCC0030,
-                              'name': 'basketring-model'
-                        }
-                  }],
-                  'back': [{
-                        'physics': {
-                              'color': 0xCC0030,
-                              'transparent': true,
-                              'opacity': 1,
-                              'width': 100,
-                              'height': 60,
-                              'depth': 20,
-                              'posX': 0,
-                              'posY': 200,
-                              'posZ': -60,
-                              'rotX': false,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketback-physics'
-                        },
-                        'model': {
-                              'color': 0x00FF00,
-                              'scale': 0.25,
-                              'posX': 0,
-                              'posY': 200,
-                              'posZ': -60,
-                              'rotX': false,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketback-model'
-                        }
-                  }]
-            }
+            'speed': 1000,
+            'time': 200
       },
 
 
@@ -82,130 +22,9 @@ var levels = [
 
 
       {
-            'totalBalls': 10,
-            'pointsPerGoal': 20,
-            'bonusPoints': 40,
-            'speed': 1000,
-            'totalRings': {
-                  'ring': [{
-                              'physics': {
-                                    'color': 0x00FF00,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'radius': 27,
-                                    'tube': 3,
-                                    'segmentsR': 7,
-                                    'segmentsT': 100,
-                                    'posX': -75,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': -90,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketring-physics'
-                              },
-                              'model': {
-                                    'scale': 0.25,
-                                    'posX': -75,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': false,
-                                    'rotY': 10,
-                                    'rotZ': false,
-                                    'color': 0xCC0030,
-                                    'name': 'basketring-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0x00FF00,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'radius': 27,
-                                    'tube': 3,
-                                    'segmentsR': 7,
-                                    'segmentsT': 100,
-                                    'posX': 75,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': -90,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketring-physics'
-                              },
-                              'model': {
-                                    'scale': 0.25,
-                                    'posX': 75,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': false,
-                                    'rotY': 10,
-                                    'rotZ': false,
-                                    'color': 0xCC0030,
-                                    'name': 'basketring-model'
-                              }
-                        }
-                  ],
-                  'back': [{
-                              'physics': {
-                                    'color': 0xCC0030,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'width': 100,
-                                    'height': 60,
-                                    'depth': 20,
-                                    'posX': -75,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-physics'
-                              },
-                              'model': {
-                                    'color': 0x00FF00,
-                                    'scale': 0.25,
-                                    'posX': -75,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0xCC0030,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'width': 100,
-                                    'height': 60,
-                                    'depth': 20,
-                                    'posX': 75,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-physics'
-                              },
-                              'model': {
-                                    'color': 0x00FF00,
-                                    'scale': 0.25,
-                                    'posX': 75,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-model'
-                              }
-                        }
-                  ]
-            }
+            'totalBalls': 20,
+            'speed': 1200,
+            'time': 130
       },
 
       /**
@@ -216,189 +35,11 @@ var levels = [
 
 
       {
-            'totalBalls': 10,
-            'pointsPerGoal': 40,
-            'bonusPoints': 70,
-            'totalRings': {
-                  'ring': [{
-                              'physics': {
-                                    'color': 0x00FF00,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'radius': 27,
-                                    'tube': 3,
-                                    'segmentsR': 7,
-                                    'segmentsT': 100,
-                                    'posX': -150,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': -90,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketring-physics'
-                              },
-                              'model': {
-                                    'scale': 0.25,
-                                    'posX': -150,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': false,
-                                    'rotY': 10,
-                                    'rotZ': false,
-                                    'color': 0xCC0030,
-                                    'name': 'basketring-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0x00FF00,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'radius': 27,
-                                    'tube': 3,
-                                    'segmentsR': 7,
-                                    'segmentsT': 100,
-                                    'posX': 0,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': -90,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketring-physics'
-                              },
-                              'model': {
-                                    'scale': 0.25,
-                                    'posX': 0,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': false,
-                                    'rotY': 10,
-                                    'rotZ': false,
-                                    'color': 0xCC0030,
-                                    'name': 'basketring-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0x00FF00,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'radius': 27,
-                                    'tube': 3,
-                                    'segmentsR': 7,
-                                    'segmentsT': 100,
-                                    'posX': 150,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': -90,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketring-physics'
-                              },
-                              'model': {
-                                    'scale': 0.25,
-                                    'posX': 150,
-                                    'posY': 180,
-                                    'posZ': -30,
-                                    'rotX': false,
-                                    'rotY': 10,
-                                    'rotZ': false,
-                                    'color': 0xCC0030,
-                                    'name': 'basketring-model'
-                              }
-                        }
-                  ],
-                  'back': [{
-                              'physics': {
-                                    'color': 0xCC0030,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'width': 100,
-                                    'height': 60,
-                                    'depth': 20,
-                                    'posX': -150,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-physics'
-                              },
-                              'model': {
-                                    'color': 0x00FF00,
-                                    'scale': 0.25,
-                                    'posX': -150,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0xCC0030,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'width': 100,
-                                    'height': 60,
-                                    'depth': 20,
-                                    'posX': 0,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-physics'
-                              },
-                              'model': {
-                                    'color': 0x00FF00,
-                                    'scale': 0.25,
-                                    'posX': 0,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-model'
-                              }
-                        },
-
-                        {
-                              'physics': {
-                                    'color': 0xCC0030,
-                                    'transparent': true,
-                                    'opacity': 1,
-                                    'width': 100,
-                                    'height': 60,
-                                    'depth': 20,
-                                    'posX': 150,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-physics'
-                              },
-                              'model': {
-                                    'color': 0x00FF00,
-                                    'scale': 0.25,
-                                    'posX': 150,
-                                    'posY': 200,
-                                    'posZ': -60,
-                                    'rotX': false,
-                                    'rotY': false,
-                                    'rotZ': false,
-                                    'name': 'basketback-model'
-                              }
-                        }
-                  ]
-            }
+            'totalBalls': 18,
+            'speed': 1200,
+            'time': 110
       },
+
 
       /**
        *
@@ -408,74 +49,90 @@ var levels = [
 
 
       {
-            'totalBalls': 10,
-            'pointsPerGoal': 40,
-            'bonusPoints': 70,
-            'totalRings': {
-                  'ring': [{
-                        'physics': {
-                              'color': 0x00FF00,
-                              'transparent': true,
-                              'opacity': 1,
-                              'radius': 27,
-                              'tube': 3,
-                              'segmentsR': 7,
-                              'segmentsT': 100,
-                              'posX': 0,
-                              'posY': 180,
-                              'posZ': -30,
-                              'rotX': -90,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketring-physics'
-                        },
-                        'model': {
-                              'scale': 0.25,
-                              'posX': 0,
-                              'posY': 180,
-                              'posZ': -30,
-                              'rotX': false,
-                              'rotY': 10,
-                              'rotZ': false,
-                              'color': 0xCC0030,
-                              'name': 'basketring-model'
-                        }
-                  }],
-                  'back': [{
-                        'physics': {
-                              'color': 0xCC0030,
-                              'transparent': true,
-                              'opacity': 1,
-                              'width': 100,
-                              'height': 60,
-                              'depth': 20,
-                              'posX': 0,
-                              'posY': 200,
-                              'posZ': -60,
-                              'rotX': false,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketback-physics'
-                        },
-                        'model': {
-                              'color': 0x00FF00,
-                              'scale': 0.25,
-                              'posX': 0,
-                              'posY': 200,
-                              'posZ': -60,
-                              'rotX': false,
-                              'rotY': false,
-                              'rotZ': false,
-                              'name': 'basketback-model'
-                        }
-                  }]
-            },
-            'animate': {
-                  'ring': 0,
-                  'position': 'down',
-                  'length': 100
-            }
-      }
+            'totalBalls': 18,
+            'speed': 1400,
+            'time': 100
+      },
 
+      /**
+       *
+       * LEVEL 5
+       *
+       */
+
+
+      {
+            'totalBalls': 14,
+            'speed': 1400,
+            'time': 100
+      },
+
+
+      /**
+       *
+       * LEVEL 6
+       *
+       */
+
+
+      {
+            'totalBalls': 15,
+            'speed': 1600,
+            'time': 100
+      },
+
+      /**
+       *
+       * LEVEL 7
+       *
+       */
+
+
+      {
+            'totalBalls': 15,
+            'speed': 1600,
+            'time': 110
+      },
+
+
+      /**
+       *
+       * LEVEL 8
+       *
+       */
+
+
+      {
+            'totalBalls': 15,
+            'speed': 1800,
+            'time': 50
+      },
+
+      /**
+       *
+       * LEVEL 9
+       *
+       */
+
+
+      {
+            'totalBalls': 10,
+            'speed': 2000,
+            'time': 50
+      },
+
+
+      /**
+       *
+       * LEVEL 10
+       *
+       */
+
+
+      {
+            'totalBalls': 10,
+            'speed': 2000,
+            'time': 40
+      }
 
 ]

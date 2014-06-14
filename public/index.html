@@ -172,12 +172,19 @@
                 <div class="info-score shoot">
                     <div class="title">Shoot.kerm.is</div>
                     <div class="subtitle">Level <span class="level"></span></div>
-                    <div class="remaining">
-                        <span class="count"></span>&nbsp;balls remaining
+                    <div class="down">
+                        <div class="inf remaining">
+                            <span class="count"></span>&nbsp;bullets remaining
+                        </div>
+                        <div class="inf time">
+                            <span class="timeLeft"></span>&nbsp;seconds remaining
+                        </div>
+                        <div class="inf">Score :&nbsp;
+                            <span class="score"></span>
+                        </div>
                     </div>
-                    <br>Score :&nbsp;
-                    <span class="score"></span>
-                    <a href="#" class="next-level-button">Press space for next level &rarr;</a>
+                    <a href="#" class="next-level-button next-level level-button">Press <span>space</span> to continue &rarr;</a>
+                    <a href="#" class="replay-level-button replay-level level-button">&larr; Press <span>R</span> to play again</a>
                  </div>
             </div>
 
@@ -310,7 +317,7 @@
                         if(child != undefined) {
 
 
-                            if(child.name == 'shootring-physics' || child.name == 'shootring-model' || child.name == 'shootback-model' || child.name == 'shootback-physics' || child.name == 'ball') {
+                            if(child.name == 'target' || child.name == 'constraint' || child.name == 'bullet') {
                             //     console.log('remove');
                                 // scene.remove(child);
                                 removeObject.push(child);
@@ -331,15 +338,15 @@
                     balls = [];
                     //shootRings = [];
 
-                    console.log('shootRings', shootRings);
-                    shootRings = [];
-                    console.log('shootRings 2', shootRings);
+                    console.log('shootRings', basketRings);
+                    basketRings = [];
+                    console.log('basketRings 2', basketRings);
 
 
 
-                    yeswecan.build_theshoot();
+                    //yeswecan.build_thebasket();
                     yeswecan.build_theball();
-                     console.log('shootRings 3', shootRings);
+                    console.log('shootRings 3', basketRings);
 
                      console.log('scene after', scene);
 
@@ -433,6 +440,8 @@
                             //look.theUserIsLockingThePointer();
                             $('.info-score').addClass('active');
 
+                            shoot.timeLeft('play clicked');
+
                             //shoot.addTargets();
 
                             scoreTick();
@@ -476,46 +485,60 @@
 
                 }
 
+                // var vis = (function(){
+                //         var stateKey, eventKey, keys = {
+                //             hidden: "visibilitychange",
+                //             webkitHidden: "webkitvisibilitychange",
+                //             mozHidden: "mozvisibilitychange",
+                //             msHidden: "msvisibilitychange"
+                //         };
+                //         for (stateKey in keys) {
+                //             if (stateKey in document) {
+                //                 eventKey = keys[stateKey];
+                //                 break;
+                //             }
+                //         }
+                //         return function(c) {
+                //             if (c) document.addEventListener(eventKey, c);
+                //             return !document[stateKey];
+                //         }
+                //     })();
 
-
+                // vis(function() {
+                //     if(vis()) {
+                //         console.log('visible');
+                //         resumeRender();
+                //     }  else {
+                //         console.log('not visible');
+                //         stopRender();
+                //     }
+                // });
 
                 $(window).focus(function() {
+                    console.log('focus');
+                        resumeRender();
+                }).blur(function() {
+                    console.log('blur');
+                        stopRender();
+                });
+
+                function stopRender() {
+                        console.log('stopRender');
+                        shoot.rendering = false;
+                        shoot.start = false;
+                }
+
+                function resumeRender() {
+                        console.log('resumeRender');
                         shoot.start = true;
                         shoot.rendering = true;
 
-
-                        /**
-                         *
-                         * Check if we pressed play button and info overlay is gone
-                         *
-                         */
-
-
+                        // Check if we pressed play button and info overlay is gone
                         if(!shoot.infoVisible)
                         {
                             scoreTick();
                         }
-                        // for (var i = 0; i < basketRings.length; i++) {
-                        //     basketRings[i].speed = blockSpeed;
-                        // };
-
-                }).blur(function() {
-                        console.log('stop render');
-                        shoot.rendering = false;
-                        shoot.start = false;
-
-                        // for (var i = 0; i < basketRings.length; i++) {
-                        //     blockSpeed = basketRings[i].speed;
-                        //     basketRings[i].speed = 0;
-                        //     // basketRings[i].__dirtyposition = false;
-                        //     console.log(basketRings);
-                        // };
-                });
-
-                console.log('shoot', performance.now());
-                console.log('shoot', performance.now());
-
-                // var blockSpeed = 0.7;
+                }
         </script>
 
 

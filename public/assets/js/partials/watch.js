@@ -59,7 +59,7 @@ var look = {
                         z = -1400;
                   } else if (shoot.controller == 'mouse') {
                         x = 0; //(event.x - sceneW)+ sceneW /2;
-                        y = 0; //100 * shoot.power;
+                        y = -2; //100 * shoot.power;
                         z = -1400;
                   } else if (shoot.controller == 'leap') {
 
@@ -84,8 +84,6 @@ var look = {
                         shoot.reload = true;
 
                         firedBullets.push(ball);
-
-
 
                         /**
                          *
@@ -116,13 +114,13 @@ var look = {
 
                                     if (shoot.totalBalls == 0) { // no balls left so stop the game
 
-                                          shoot.start = false;
+                                          shoot.endGame();
 
                                           // $('.the_level span').text(shoot.level + 1);
                                           // $('.the_points span').text(shoot.totalPoints);
                                           // $('.next_level span').text(shoot.level + 2);
 
-                                          $('.totall').addClass('score');
+                                          // $('.totall').addClass('score');
                                     } else { // create new ball
 
                                           /**
@@ -135,9 +133,9 @@ var look = {
                                                 volume: .3
                                           }); // #PLAY SOUND
 
-                                          setTimeout(function(){ // set a timeout of 0 so we don't halt execution
+                                          setTimeout(function() { // set a timeout of 0 so we don't halt execution
                                                 yeswecan.build_theball();
-                                          },0)
+                                          }, 0)
                                           shoot.reload = false;
                                     }
 
@@ -291,7 +289,30 @@ var look = {
                               yeswecan.get_theSceneCam = yeswecan.get_AllTheCameras[yeswecan.get_thecurrentCam];
                               break;
                   }
+            } else {
+                  if (shoot.isNextLevel) {
+                        switch (event.keyCode) {
+                              case 32: // spatie
+                                    if (!shoot.gameOver) {
+                                          shoot.nextLevel(shoot.level);
+                                    }
+                                    break;
+                              case 82: // R
+                                    if (!shoot.gameOver) {
+                                          shoot.replayLevel(shoot.level);
+                                    }
+                                    break;
+
+                        }
+                  }
             }
+
+            if (event.keyCode == 27 && !shoot.infoVisible) { // esc
+                  //event.preventDefault();
+                  shoot.pause()
+
+            }
+
 
       },
 

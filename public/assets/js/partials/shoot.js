@@ -6,7 +6,7 @@ var shoot = {
        *
        */
 
-      level: 1,
+      level: 0,
       reload: false,
       start: false,
       controller: 'mouse',
@@ -15,6 +15,7 @@ var shoot = {
       totalMissed: 0,
       rendering: true,
       infoVisible: true,
+      isNextLevel: false,
 
 
       /**
@@ -32,8 +33,8 @@ var shoot = {
              */
 
             shoot.totalBalls = levels[shoot.level].totalBalls;
-            $('.subtitle').text('Level ' + (shoot.level + 1));
-
+            $('.level').text(shoot.level);
+            timeRemaining = levels[shoot.level].time;
 
             /**
              *
@@ -106,7 +107,7 @@ var shoot = {
       animate: function() {
             //scene.simulate(); // run physics
 
-             requestAnimationFrame(shoot.animate); // continue animating
+            requestAnimationFrame(shoot.animate); // continue animating
             //capturer.capture( renderer.domElement );
 
             // if (shoot.rendering) {
@@ -121,17 +122,17 @@ var shoot = {
 
             counter++;
 
-            if(counter == 60){
-              setTimeout(function() {
-                            if(shoot.start){
-                                 // console.log('add target', t);
-                                 //    t++;
-                                   requestAnimationFrame(shoot.addTargets);
-                                    console.log('add target');
-                                scoreTick();
-                            }
-                        }, levels[shoot.level].speed/60);
-              counter = 0;
+            if (counter == 60) {
+                  setTimeout(function() {
+                        if (shoot.start) {
+                              // console.log('add target', t);
+                              //    t++;
+                              requestAnimationFrame(shoot.addTargets);
+                              console.log('add target');
+                              scoreTick();
+                        }
+                  }, levels[shoot.level].speed / 60);
+                  counter = 0;
             }
 
 
@@ -259,11 +260,11 @@ var shoot = {
                   //console.log('ball.shot', ball.shot);
                   if (!basketRings[i].hit) {
 
-                        if (basketRings[i].tooth.rotation.x < helpMe.calculate('rad', -45)) {
+                        if (basketRings[i].target.rotation.x < helpMe.calculate('rad', -45)) {
 
                               // ball.shot = true;
                               basketRings[i].hit = true;
-                              shoot.score(basketRings[i].tooth.number);
+                              shoot.score(basketRings[i].target.number);
                               // console.log('ball rotation shot after', ball.shot)
                         }
                   }
@@ -278,6 +279,7 @@ var shoot = {
             //   console.log(videoURL);
             // }, 2000);
 
+            console.log('score');
             /**
              *
              * Update total scored, missed and points
@@ -306,7 +308,7 @@ var shoot = {
                   opacity: 1
             });
             var materialArray = [materialFront, materialSide];
-            var textGeom = new THREE.TextGeometry(levels[shoot.level].pointsPerGoal, {
+            var textGeom = new THREE.TextGeometry(basketRings[ringnumber].target.points, {
                   size: 10,
                   height: 10,
                   curveSegments: 3,
@@ -327,7 +329,7 @@ var shoot = {
             var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
 
-            //textMesh.position.set(basketRings[ringnumber].tooth.position.x, basketRings[ringnumber].tooth.position.y + 20, basketRings[ringnumber].tooth.position.z);
+            //textMesh.position.set(basketRings[ringnumber].target.position.x, basketRings[ringnumber].target.position.y + 20, basketRings[ringnumber].target.position.z);
             textMesh.position.set(0, 80, 300);
             textMesh.name = 'points';
 
@@ -389,9 +391,10 @@ var shoot = {
       },
 
       updateInfo: function() {
-
+            $('.level').text(shoot.level + 1);
             $('.count').text(shoot.totalBalls);
             $('.score').text(shoot.totalPoints);
+            $('.timeLeft').text(timeRemaining);
 
 
             // if(shoot.totalScored == levels[shoot.level].totalBalls)
@@ -433,14 +436,91 @@ var shoot = {
                   basketRings[i].stand.position.x -= basketRings[i].speed;
                   basketRings[i].stand.__dirtyPosition = true;
 
-                  if (basketRings[i].tooth.position.x < -175) {
-                        scene.remove(basketRings[i].tooth);
+                  if (basketRings[i].target.position.x < -175) {
+                        scene.remove(basketRings[i].target);
                         scene.remove(basketRings[i].stand);
                         scene.remove(basketRings[i].constraint);
                         basketRings.splice(i, 1);
                   }
             }
 
+      },
+
+      endGame: function() {
+            shoot.start = false;
+
+            var newTicket = $('.info-score').clone();
+            newTicket.removeClass('active');
+
+            $('.info-score').addClass('ripping');
+
+            setTimeout(function() {
+                  $('.info-score').removeClass('ripping').addClass('big');
+
+                  setTimeout(function() {
+                        shoot.isNextLevel = true;
+                        $('.level-button').fadeIn();
+                        $('.ticket-holder').append(newTicket)
+                  }, 2500)
+
+            }, 1000)
+      },
+
+      resetGame: function(type, i) {
+            console.log('type', type);
+            $('.big').css({
+                  right: '500%'
+            });
+
+            //only do this after the big ticket is gone from the screen
+            setTimeout(function() {
+                  $('.big').remove();
+
+                  if (shoot.level < levels.length - 1) {
+
+                        if (type == 'next') {
+                              shoot.globalPoints += shoot.totalPoints;
+                              shoot.level++;
+                        } else {
+                              shoot.level = i;
+                        }
+
+                        $('.info-score').addClass('active');
+                        timeRemaining = levels[shoot.level].time;
+                        shoot.totalBalls = levels[shoot.level].totalBalls;
+                        shoot.totalPoints = 0;
+                        // shoot.totalScored = 0;
+                        // shoot.totalMissed = 0;
+
+                        reloadScene();
+
+                        shoot.start = true;
+                        shoot.isNextLevel = false;
+
+                        shoot.timeLeft('reset Game');
+
+                        console.log('level', shoot.level);
+                  } else {
+                        shoot.globalPoints += shoot.totalPoints;
+                        console.log('game over', shoot.globalPoints);
+                        shoot.gameOver = true;
+
+                        $('.game-over').addClass('slide-up');
+
+                        $('.totalScoreGame').html(shoot.globalPoints);
+                        $('.totalScoredGame').html(shoot.totalScored);
+                        $('.totalMissedGame').html(shoot.totalMissed);
+                  }
+            }, 500)
+
+      },
+
+      replayLevel: function(i) {
+            shoot.resetGame('replay', i);
+      },
+
+      nextLevel: function(i) {
+            shoot.resetGame('next', i);
       },
 
       addTargets: function() {
@@ -451,7 +531,7 @@ var shoot = {
                   // timeRemaining -= 1;
                   //game.updateScoreInfo();
 
-                  var random = Math.ceil(Math.random() * 2);
+                  var random = Math.ceil(Math.random() * 3);
                   var place = Math.ceil(Math.random() * 3);
                   console.log('random', random, t);
 
@@ -460,11 +540,11 @@ var shoot = {
                               yeswecan.addTooth(t, 0, 0, .7, random);
                               break;
                         case 2:
-                              yeswecan.addTooth(t, 37, 30, .6, random);
-                              //       break;
-                              // case 3:
-                              //       yeswecan.addTooth(t, 95, 50, .8, random);
-                              //       break;
+                              yeswecan.addTooth(t, 38, 30, .6, random);
+                              break;
+                        case 3:
+                              yeswecan.addTooth(t, 96, 50, .8, random);
+                              break;
                   }
 
 
@@ -476,6 +556,50 @@ var shoot = {
             //             shoot.addTargets();
             //       }
             // }, 1000)
+      },
+
+      timeLeft: function(where) {
+            console.log('where timeleft?', where);
+            //ticks once a second for the score, checks for remaining time
+            if (timeRemaining == 0) {
+                  shoot.endGame();
+            }
+
+            if (shoot.start && timeRemaining > 0) {
+
+                  timeRemaining -= 1;
+                  //game.updateScoreInfo();
+
+                  setTimeout(function() {
+                        if (shoot.start) {
+                              shoot.timeLeft('timeLeft');
+                        }
+                  }, 1000)
+            }
+      },
+
+      pause: function() {
+
+            if (!shoot.start) {
+                  $('.pause').fadeOut(100);
+                  shoot.start = true;
+                  shoot.timeLeft('pause fadeout'); //#REMOVE
+                  console.log('fadeout');
+            } else {
+                  $('.pause').fadeIn(100);
+                  shoot.start = false;
+                  shoot.timeLeft('pause fadein');
+                  console.log('fadein');
+            }
+      },
+
+      showNotification: function(text) {
+            $('.notification').html(text);
+
+            $('.notification').addClass('active');
+            setTimeout(function() {
+                  $('.notification').removeClass('active');
+            }, 1500)
       }
 }
 
@@ -524,3 +648,4 @@ var fullscreenElement;
 //     framerate: 24
 // } );
 var counter = 0;
+var timeRemaining;

@@ -61,7 +61,7 @@ var goBack = function() {
 
 var startGame = function() {
       $('.info').removeClass('slide_down');
-      //look.theUserIsLockingThePointer();
+      look.theUserIsLockingThePointer();
       $('.info-score').addClass('active');
       shoot.infoVisible = false;
 

@@ -6,7 +6,7 @@ var shoot = {
        *
        */
 
-      level: 8,
+      level: 0,
       reload: false,
       start: false,
       controller: 'mouse',

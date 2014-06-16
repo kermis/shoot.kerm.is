@@ -6,7 +6,7 @@ var shoot = {
        *
        */
 
-      level: 0,
+      level: 8,
       reload: false,
       start: false,
       controller: 'mouse',
@@ -28,11 +28,11 @@ var shoot = {
 
             /**
              *
-             * Set totalBalls and show the level
+             * Set totalBullets and show the level
              *
              */
 
-            shoot.totalBalls = levels[shoot.level].totalBalls;
+            shoot.totalBullets = levels[shoot.level].totalBullets;
             $('.level').text(shoot.level);
             timeRemaining = levels[shoot.level].time;
 
@@ -54,39 +54,13 @@ var shoot = {
             physics.build_scene();
             shoot.createStats();
 
+
             /**
              *
              * Call functions in canwebuildit.js
              *
              */
-
-            yeswecan.build_therenderer();
-            yeswecan.build_thecamera();
-            yeswecan.build_thebasketstand();
-            yeswecan.build_thelights();
-            //yeswecan.build_thebasket();
-            yeswecan.build_theball();
-
-
-
-            yeswecan.buildTooth();
-            yeswecan.build_theRifle();
-
-
-
-
-
-
-            // var head = new THREE.ObjectLoader();
-
-            // head.load('assets/js/models/head.js', function (mesh) {
-
-            //     mesh.scale.set(10, 10, 10);
-            //     mesh.position.set(-40, 0, 500);
-            //     mesh.name = 'basketstand';
-            //     scene.add(mesh);
-
-            // });
+            yeswecan.build_everything();
 
             /**
              *
@@ -105,44 +79,30 @@ var shoot = {
        */
 
       animate: function() {
-            //scene.simulate(); // run physics
 
             requestAnimationFrame(shoot.animate); // continue animating
-            //capturer.capture( renderer.domElement );
-
-            // if (shoot.rendering) {
-            //       shoot.render();
-            // }
 
             shoot.render();
             shoot.moveTargets();
             scene.simulate();
-
-
 
             counter++;
 
             if (counter == 60) {
                   setTimeout(function() {
                         if (shoot.start) {
-                              // console.log('add target', t);
-                              //    t++;
                               requestAnimationFrame(shoot.addTargets);
-                              console.log('add target');
                               scoreTick();
                         }
                   }, levels[shoot.level].speed / 60);
                   counter = 0;
             }
-
-
       },
 
       render: function() {
 
             renderer.render(scene, yeswecan.get_theSceneCam); // render the scene
             stats.update(); // update the stats
-
 
             /**
              *
@@ -160,38 +120,19 @@ var shoot = {
 
             shoot.updateInfo();
 
+            // set bullet fixed after
 
-            // /**
-            //  *
-            //  * Check if we have to animate the basketrings during a level
-            //  *
-            //  */
+            // for (var i = 0; i < firedBullets.length; i++) {
+            //       // console.log('pos Y', firedBullets[i].position.y);
 
-            // if(shoot.start) {
-            //       if(levels[shoot.level].animate) {
-
-            //             shoot.animateRings();
-
+            //       if (firedBullets[i].position.y <= 5) {
+            //             firedBullets[i].setAngularFactor(new THREE.Vector3(0, 0, 0));
+            //             firedBullets[i].setLinearFactor(new THREE.Vector3(0, 0, 0));
+            //             firedBullets[i].setLinearVelocity(new THREE.Vector3(0, 0, 0));
+            //             firedBullets[i].setAngularVelocity(new THREE.Vector3(0, 0, 0));
             //       }
             // }
-
-            // if(shoot.start)
-            // {
-
-            // }
-
-
-
-            // if(shoot.start) {
-            // setTimeout(function() {
-            //       random = Math.ceil(Math.random() * 3);
-            //       yeswecan.addTooth(0, 0, 0, .7, random);
-            // }, 2000)
-            // }
-
-            //shoot.moveTargets();
       },
-
 
       /**
        *
@@ -200,86 +141,40 @@ var shoot = {
        */
 
       createStats: function() {
-
             stats = new Stats();
             stats.domElement.style.position = 'absolute';
             stats.domElement.style.top = '0px';
             stats.domElement.style.zIndex = 100;
             container.appendChild(stats.domElement);
-
       },
 
       checkCollision: function() {
-
             /**
              *
-             * Double check to be 100% sure a ball went through
+             * Double check to be 100% sure a bullet  hit a target
              *
              */
 
-            shoot.checkDistanceTo(15, 25); // posY, distanceTo
-            shoot.checkDistanceTo(20, 30); // posY, distanceTo
+
+            shoot.checkDistanceTo();
+            setTimeout(function() {
+                  shoot.checkDistanceTo();
+            }, 8);
 
       },
 
-      checkDistanceTo: function(posY, distanceTo) {
-
-            // var ballPos = new THREE.Vector3(
-            //     ball.position.x,
-            //     ball.position.y,
-            //     ball.position.z
-            // );
-
-            // var basketRingPos;
-
-
-            // if(counter== 0){
-            // console.log('basketrings', basketRings, basketRings.length);
-            //       counter++;
-            // }
-
-
-            for (var i = 0; i < basketRings.length; i++) {
-
-                  // basketRingPos = new THREE.Vector3(
-                  //       basketRings[i].position.x,
-                  //       basketRings[i].position.y - posY,
-                  //       basketRings[i].position.z
-                  // );
-
-                  // if(ballPos.distanceTo(basketRingPos) < distanceTo) {
-
-                  //       if(!ball.score) {
-                  //             ball.score = true;
-                  //             shoot.score(basketRings[i].number);
-                  //       }
-
-                  // }
-
-                  //console.log('basketRings[i].rotation.x', basketRings[i].rotation.x, 'rad', helpMe.calculate('rad', -45));
-                  //console.log('ball.shot', ball.shot);
-                  if (!basketRings[i].hit) {
-
-                        if (basketRings[i].target.rotation.x < helpMe.calculate('rad', -45)) {
-
-                              // ball.shot = true;
-                              basketRings[i].hit = true;
-                              shoot.score(basketRings[i].target.number);
-                              // console.log('ball rotation shot after', ball.shot)
+      checkDistanceTo: function() {
+            for (var i = 0; i < targets.length; i++) {
+                  if (!targets[i].hit) {
+                        if ((targets[i].target.rotation.x).toFixed(1) <= helpMe.calculate('rad', 10)) { //!= 1.6
+                              targets[i].hit = true;
+                              shoot.score(targets[i].target.number);
                         }
                   }
             }
-
       },
 
       score: function(ringnumber) {
-            // setTimeout(function() {
-            //   var videoURL = capturer.save();
-            //   capturer.stop();
-            //   console.log(videoURL);
-            // }, 2000);
-
-            console.log('score');
             /**
              *
              * Update total scored, missed and points
@@ -288,8 +183,7 @@ var shoot = {
 
             shoot.totalScored++;
             shoot.totalMissed--;
-            shoot.totalPoints += levels[shoot.level].pointsPerGoal;
-
+            shoot.totalPoints += targets[ringnumber].target.points; //levels[shoot.level].pointsPerGoal;
 
             /**
              *
@@ -297,20 +191,22 @@ var shoot = {
              *
              */
 
+
             var materialFront = new THREE.MeshBasicMaterial({
-                  color: 0xCC0030,
+                  color: targets[ringnumber].target.material.color,
                   transparent: true,
                   opacity: 1
             });
             var materialSide = new THREE.MeshBasicMaterial({
-                  color: 0x00ff00,
+                  color: 0xFFFFFF,
                   transparent: true,
-                  opacity: 1
+                  opacity: .5
             });
             var materialArray = [materialFront, materialSide];
-            var textGeom = new THREE.TextGeometry(basketRings[ringnumber].target.points, {
-                  size: 10,
-                  height: 10,
+
+            var textGeom = new THREE.TextGeometry(targets[ringnumber].target.points, {
+                  size: 8,
+                  height: 2,
                   curveSegments: 3,
                   font: "helvetiker",
                   weight: "bold",
@@ -329,8 +225,8 @@ var shoot = {
             var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
 
 
-            //textMesh.position.set(basketRings[ringnumber].target.position.x, basketRings[ringnumber].target.position.y + 20, basketRings[ringnumber].target.position.z);
-            textMesh.position.set(0, 80, 300);
+            textMesh.position.set(targets[ringnumber].target.position.x, targets[ringnumber].target.position.y + 20, targets[ringnumber].target.position.z + 30);
+            //textMesh.position.set(0, 80, 300);
             textMesh.name = 'points';
 
             scene.add(textMesh);
@@ -362,88 +258,43 @@ var shoot = {
 
       /**
        *
-       * Remove balls when the are inside the basketstand otherwise keep them visible
+       * Remove bullets
        *
        */
 
-
-      removeABall: function() {
-
+      removeABullet: function() {
             var i = 0;
-
-            $.each(balls, function(index, basketball) {
-
+            $.each(bullets, function(index, bullet) {
                   if (i == 0) {
-
-                        if (basketball.shot) {
-                              if (basketball.position.z < 100 && basketball.position.y < 50 && basketball.position.x > -250 && basketball.position.x < 250) {
-
-                                    scene.remove(basketball);
-                                    balls.splice(index, 1);
+                        if (bullet.shot) {
+                              if (bullet.position.z < 100 && bullet.position.y < 50 && bullet.position.x > -250 && bullet.position.x < 250) {
+                                    scene.remove(bullet);
+                                    bullets.splice(index, 1);
                                     i++
-
                               }
                         }
-
                   }
-
             });
       },
 
       updateInfo: function() {
             $('.level').text(shoot.level + 1);
-            $('.count').text(shoot.totalBalls);
+            $('.count').text(shoot.totalBullets);
             $('.score').text(shoot.totalPoints);
             $('.timeLeft').text(timeRemaining);
-
-
-            // if(shoot.totalScored == levels[shoot.level].totalBalls)
-            // {
-            //   $('.the_bonus span').text(levels[shoot.level].bonusPoints);
-            // }
-            //$('.level').text('Level ' + (shoot.level + 1));
-            // $('.scored span').text(shoot.totalScored);
-            // $('.missed span').text(shoot.totalMissed);
-
-      },
-
-      animateRings: function() {
-            if (levels[shoot.level].animate.position == 'up') {
-                  if (basketRings[levels[shoot.level].animate.ring].position.y < 200) {
-                        basketRings[levels[shoot.level].animate.ring].position.y += 0.5;
-                  } else {
-                        basketRings[levels[shoot.level].animate.ring].position.y -= 0.5;
-                        levels[shoot.level].animate.position = 'down';
-                  }
-            }
-
-            if (levels[shoot.level].animate.position == 'down') {
-                  if (basketRings[levels[shoot.level].animate.ring].position.y > levels[shoot.level].animate.length) {
-                        basketRings[levels[shoot.level].animate.ring].position.y -= 0.5;
-                  } else {
-                        basketRings[levels[shoot.level].animate.ring].position.y += 0.5;
-                        levels[shoot.level].animate.position = 'up';
-                  }
-            }
-
-            basketRings[levels[shoot.level].animate.ring].__dirtyPosition = true;
       },
 
       moveTargets: function() {
-
-
-            for (var i = 0; i < basketRings.length; i++) {
-                  basketRings[i].stand.position.x -= basketRings[i].speed;
-                  basketRings[i].stand.__dirtyPosition = true;
-
-                  if (basketRings[i].target.position.x < -175) {
-                        scene.remove(basketRings[i].target);
-                        scene.remove(basketRings[i].stand);
-                        scene.remove(basketRings[i].constraint);
-                        basketRings.splice(i, 1);
+            for (var i = 0; i < targets.length; i++) {
+                  targets[i].stand.position.x -= targets[i].speed;
+                  targets[i].stand.__dirtyPosition = true;
+                  if (targets[i].target.position.x < -175) {
+                        scene.remove(targets[i].target);
+                        scene.remove(targets[i].stand);
+                        scene.remove(targets[i].constraint);
+                        //targets.splice(i, 1);
                   }
             }
-
       },
 
       endGame: function() {
@@ -456,18 +307,15 @@ var shoot = {
 
             setTimeout(function() {
                   $('.info-score').removeClass('ripping').addClass('big');
-
                   setTimeout(function() {
                         shoot.isNextLevel = true;
                         $('.level-button').fadeIn();
                         $('.ticket-holder').append(newTicket)
                   }, 2500)
-
             }, 1000)
       },
 
       resetGame: function(type, i) {
-            console.log('type', type);
             $('.big').css({
                   right: '500%'
             });
@@ -487,7 +335,7 @@ var shoot = {
 
                         $('.info-score').addClass('active');
                         timeRemaining = levels[shoot.level].time;
-                        shoot.totalBalls = levels[shoot.level].totalBalls;
+                        shoot.totalBullets = levels[shoot.level].totalBullets;
                         shoot.totalPoints = 0;
                         // shoot.totalScored = 0;
                         // shoot.totalMissed = 0;
@@ -499,10 +347,8 @@ var shoot = {
 
                         shoot.timeLeft('reset Game');
 
-                        console.log('level', shoot.level);
                   } else {
                         shoot.globalPoints += shoot.totalPoints;
-                        console.log('game over', shoot.globalPoints);
                         shoot.gameOver = true;
 
                         $('.game-over').addClass('slide-up');
@@ -533,17 +379,16 @@ var shoot = {
 
                   var random = Math.ceil(Math.random() * 3);
                   var place = Math.ceil(Math.random() * 3);
-                  console.log('random', random, t);
 
                   switch (place) {
                         case 1:
-                              yeswecan.addTooth(t, 0, 0, .7, random);
+                              yeswecan.addTarget(t, 0, 0, .7, random);
                               break;
                         case 2:
-                              yeswecan.addTooth(t, 38, 30, .6, random);
+                              yeswecan.addTarget(t, 38, 30, .6, random);
                               break;
                         case 3:
-                              yeswecan.addTooth(t, 96, 50, .8, random);
+                              yeswecan.addTarget(t, 96, 50, .8, random);
                               break;
                   }
 
@@ -559,7 +404,6 @@ var shoot = {
       },
 
       timeLeft: function(where) {
-            console.log('where timeleft?', where);
             //ticks once a second for the score, checks for remaining time
             if (timeRemaining == 0) {
                   shoot.endGame();
@@ -578,18 +422,26 @@ var shoot = {
             }
       },
 
+      getRandomColor: function() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                  color += letters[Math.floor(Math.random() * 16)];
+            }
+
+            return color;
+      },
+
       pause: function() {
 
             if (!shoot.start) {
                   $('.pause').fadeOut(100);
                   shoot.start = true;
                   shoot.timeLeft('pause fadeout'); //#REMOVE
-                  console.log('fadeout');
             } else {
                   $('.pause').fadeIn(100);
                   shoot.start = false;
                   shoot.timeLeft('pause fadein');
-                  console.log('fadein');
             }
       },
 
@@ -616,36 +468,35 @@ var shoot = {
  * Get the container element
  *
  */
+// var container = document.getElementById('container');
 
-var container = document.getElementById('container');
+// /**
+//  *
+//  * Some THREE objects
+//  *
+//  */
 
-/**
- *
- * Some THREE objects
- *
- */
+// var /* camera, */ scene, renderer;
+// var sceneW, sceneH;
+// var physicsMaterial;
 
-var /* camera, */ scene, renderer;
-var sceneW, sceneH;
-var physicsMaterial;
+// var throwing = false;
 
-var throwing = false;
+// var ball, basketRing;
+// var basketRings = [];
+// var firedBullets = [];
+// var balls = [];
 
-var ball, basketRing;
-var basketRings = [];
-var firedBullets = [];
-var balls = [];
-
-var t = 0;
-var stats;
-
-
-// The element we'll make fullscreen and pointer locked.
-var fullscreenElement;
+// var t = 0;
+// var stats;
 
 
-// var capturer = new CCapture( { // FOR CAPTURING A REPLAY
-//     framerate: 24
-// } );
-var counter = 0;
-var timeRemaining;
+// // The element we'll make fullscreen and pointer locked.
+// var fullscreenElement;
+
+
+// // var capturer = new CCapture( { // FOR CAPTURING A REPLAY
+// //     framerate: 24
+// // } );
+// var counter = 0;
+// var timeRemaining;

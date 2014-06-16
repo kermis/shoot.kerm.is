@@ -8,7 +8,7 @@ var levels = [
 
 
       {
-            'totalBalls': 20,
+            'totalBullets': 20,
             'speed': 1000,
             'time': 200
       },
@@ -22,7 +22,7 @@ var levels = [
 
 
       {
-            'totalBalls': 20,
+            'totalBullets': 20,
             'speed': 1200,
             'time': 130
       },
@@ -35,7 +35,7 @@ var levels = [
 
 
       {
-            'totalBalls': 18,
+            'totalBullets': 18,
             'speed': 1200,
             'time': 110
       },
@@ -49,7 +49,7 @@ var levels = [
 
 
       {
-            'totalBalls': 18,
+            'totalBullets': 18,
             'speed': 1400,
             'time': 100
       },
@@ -62,7 +62,7 @@ var levels = [
 
 
       {
-            'totalBalls': 14,
+            'totalBullets': 14,
             'speed': 1400,
             'time': 100
       },
@@ -76,7 +76,7 @@ var levels = [
 
 
       {
-            'totalBalls': 15,
+            'totalBullets': 15,
             'speed': 1600,
             'time': 100
       },
@@ -89,7 +89,7 @@ var levels = [
 
 
       {
-            'totalBalls': 15,
+            'totalBullets': 15,
             'speed': 1600,
             'time': 110
       },
@@ -103,7 +103,7 @@ var levels = [
 
 
       {
-            'totalBalls': 15,
+            'totalBullets': 15,
             'speed': 1800,
             'time': 50
       },
@@ -116,7 +116,7 @@ var levels = [
 
 
       {
-            'totalBalls': 10,
+            'totalBullets': 10,
             'speed': 2000,
             'time': 50
       },
@@ -130,7 +130,7 @@ var levels = [
 
 
       {
-            'totalBalls': 10,
+            'totalBullets': 10,
             'speed': 2000,
             'time': 40
       }

@@ -39,17 +39,13 @@ var look = {
 
       /**
        *
-       * Shoot a ball after getting p ower
+       * Shoot a bullet
        *
        */
 
       theUserIsShooting: function(event) {
 
-
-
             if (shoot.start) {
-
-                  //  capturer.start();
 
                   var x, y, z;
 
@@ -69,21 +65,21 @@ var look = {
 
                   /**
                    *
-                   * Check if current ball is alreay thrown
+                   * Check if current bullet is alreay shot
                    *
                    */
 
-                  if (!ball.shot) {
+                  if (!bullet.shot) {
 
                         shoot.totalMissed++;
-                        ball.setAngularFactor(new THREE.Vector3(1, 1, 1));
-                        ball.setLinearFactor(new THREE.Vector3(1, 1, 1));
-                        ball.setLinearVelocity(new THREE.Vector3(x, y, z));
-                        ball.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
-                        ball.shot = true;
+                        bullet.setAngularFactor(new THREE.Vector3(1, 1, 1));
+                        bullet.setLinearFactor(new THREE.Vector3(1, 1, 1));
+                        bullet.setLinearVelocity(new THREE.Vector3(x, y, z));
+                        bullet.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
+                        bullet.shot = true;
                         shoot.reload = true;
 
-                        firedBullets.push(ball);
+                        firedBullets.push(bullet);
 
                         /**
                          *
@@ -91,7 +87,9 @@ var look = {
                          *
                          */
 
-                        //createjs.Sound.play("shoot", {volume:.3}); // #PLAY SOUND
+                        createjs.Sound.play("shoot", {
+                              volume: .3
+                        }); // #PLAY SOUND
 
                         /**
                          *
@@ -101,7 +99,7 @@ var look = {
 
                         if (shoot.reload) {
 
-                              shoot.totalBalls--; // update total balls
+                              shoot.totalBullets--; // update total balls
 
                               setTimeout(function() {
 
@@ -112,9 +110,12 @@ var look = {
                                      */
 
 
-                                    if (shoot.totalBalls == 0) { // no balls left so stop the game
+                                    if (shoot.totalBullets == 0) { // no balls left so stop the game
 
-                                          shoot.endGame();
+                                          setTimeout(function() {
+                                                shoot.endGame();
+                                          }, 1000);
+
 
                                           // $('.the_level span').text(shoot.level + 1);
                                           // $('.the_points span').text(shoot.totalPoints);
@@ -134,19 +135,19 @@ var look = {
                                           }); // #PLAY SOUND
 
                                           setTimeout(function() { // set a timeout of 0 so we don't halt execution
-                                                yeswecan.build_theball();
+                                                yeswecan.build_thebullet();
                                           }, 0)
                                           shoot.reload = false;
                                     }
 
                                     /**
                                      *
-                                     * Remove a ball
+                                     * Remove a bullet
                                      *
                                      */
 
                                     setTimeout(function() {
-                                          shoot.removeABall();
+                                          shoot.removeABullet();
                                     }, 5000);
                               }, 100);
                         }
@@ -170,7 +171,7 @@ var look = {
                               0;
                         /**
                          *
-                         * Update ball position
+                         * Update bullet position
                          *
                          */
 
@@ -184,30 +185,30 @@ var look = {
 
             /**
              *
-             * Check if ball is thrown
+             * Check if a bullet is shot
              *
              */
 
-            if (!ball.shot) {
+            if (!bullet.shot) {
                   if (shoot.controller == 'mobile') {
-                        ball.position.x += x * 0.6;
+                        bullet.position.x += x * 0.6;
                         shoot.rifle.position.x += x * 0.6;
 
                         // ball.position.y = y * 0.6;
                         // shoot.rifle.position.y = y * 0.6;
                   } else if (shoot.controller == 'mouse') {
-                        ball.position.x += x * 0.9;
-                        ball.position.y -= y * 0.9;
+                        bullet.position.x += x * 0.9;
+                        bullet.position.y -= y * 0.9;
 
                         shoot.rifle.position.x += x * 0.9;
                         shoot.rifle.position.y -= y * 0.9;
 
                   }
 
-                  ball.__dirtyPosition = true;
+                  bullet.__dirtyPosition = true;
                   shoot.rifle.__dirtyPosition = true;
             } else {
-                  ball.__dirtyPosition = false;
+                  bullet.__dirtyPosition = false;
 
             }
 
@@ -314,14 +315,5 @@ var look = {
             }
 
 
-      },
-
-      // theBallIsBouncing : function( other_object, relative_velocity, relative_rotation, contact_normal ) {
-      //     // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
-
-      //     if(other_object.name == 'basket' || other_object.name == 'ring')
-      //     {
-      //         //console.log('collide', other_object);
-      //     }
-      // }
+      }
 }

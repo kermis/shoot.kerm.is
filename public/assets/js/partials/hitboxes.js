@@ -1,117 +1,174 @@
 var hitboxes = {
       create: function() {
-            hitboxes.setPoints = [{
-                  'from': 2,
-                  'to': 2
-            }, {
-                  'from': 2,
-                  'to': 6
-            }, {
-                  'from': -1,
-                  'to': 12
-            }, {
-                  'from': 0,
-                  'to': 18
-            }, {
-                  'from': -2,
-                  'to': 20
-            }, {
-                  'from': -2,
-                  'to': 22
-            }, {
-                  'from': 0,
-                  'to': 25
-            }, {
-                  'from': 1,
-                  'to': 26
-            }, {
-                  'from': 3,
-                  'to': 27
-            }, {
-                  'from': 4,
-                  'to': 27
-            }, {
-                  'from': 5.8,
-                  'to': 30.3
-            }, {
-                  'from': 7.3,
-                  'to': 31.3
-            }, {
-                  'from': 10,
-                  'to': 30.6
-            }, {
-                  'from': 10.4,
-                  'to': 29.9
-            }, {
-                  'from': 10,
-                  'to': 28
-            }, {
-                  'from': 8,
-                  'to': 24.6
-            }, {
-                  'from': 8.5,
-                  'to': 24
-            }, {
-                  'from': 9,
-                  'to': 22
-            }, {
-                  'from': 8.8,
-                  'to': 20.7
-            }, {
-                  'from': 14,
-                  'to': 19.4
-            }, {
-                  'from': 18.5,
-                  'to': 16.3
-            }, {
-                  'from': 19.7,
-                  'to': 14
-            }, {
-                  'from': 21,
-                  'to': 10
-            }, {
-                  'from': 21,
-                  'to': 6
-            }, {
-                  'from': 23,
-                  'to': 6
-            }, {
-                  'from': 22,
-                  'to': 2
-            }, {
-                  'from': 19.8,
-                  'to': 0
-            }];
-
-            hitboxes.build(hitboxes.setPoints, 0xff0000, true, .5, -8, 53, 231, 0, 0, false);
-      },
-
-      build: function(points, color, transparent, opacity, posX, posY, posZ, rotX, rotY, rotZ) {
-
-            var rectShape = new THREE.Shape();
-            rectShape.moveTo(0, 0);
-            for (var i = 0; i < points.length; i++) {
-                  rectShape.lineTo(points[i].from, points[i].to);
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 350,
+                  'height': 4,
+                  'depth': 40,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posY': 50,
+                  'posZ': 235,
+                  'name': 'row1'
             }
-            rectShape.lineTo(0, 0);
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
 
-            var rectGeom = new THREE.ShapeGeometry(rectShape);
-            var rectMesh = new Physijs.ConvexMesh(rectGeom, new THREE.MeshBasicMaterial({
-                  color: color,
-                  transparent: transparent,
-                  opacity: opacity
-            }));
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 400,
+                  'height': 4,
+                  'depth': 40,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posY': 88,
+                  'posZ': 205,
+                  'name': 'row2'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
 
-            rectMesh.name = 'hitbox';
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 400,
+                  'height': 4,
+                  'depth': 40,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posY': 145,
+                  'posZ': 180,
+                  'name': 'row3'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
 
-            if (posX) rectMesh.position.x = posX;
-            if (posY) rectMesh.position.y = posY;
-            if (posZ) rectMesh.position.z = posZ;
-            if (rotX) rectMesh.rotation.x = helpMe.calculate('rad', rotX);
-            if (rotY) rectMesh.rotation.y = helpMe.calculate('rad', rotY);
-            if (rotZ) rectMesh.rotation.z = helpMe.calculate('rad', rotZ);
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 30,
+                  'height': 300,
+                  'depth': 30,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': -175,
+                  'posY': 147,
+                  'posZ': 310,
+                  'rotY': -5,
+                  'name': 'leftSideFront'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
 
-            scene.add(rectMesh);
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 30,
+                  'height': 300,
+                  'depth': 30,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': 175,
+                  'posY': 147,
+                  'posZ': 310,
+                  'rotY': 5,
+                  'name': 'rightSideFront'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
 
+            yeswecan_setSomeArguments = {
+                  'type': 'cube',
+                  'width': 30,
+                  'height': 350,
+                  'depth': 30,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': 0,
+                  'posY': 280,
+                  'posZ': 310,
+                  'rotX': 90,
+                  'rotZ': 90,
+                  'name': 'topSideFront'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
+
+            yeswecan_setSomeArguments = {
+                  'type': 'plane',
+                  'width': 400,
+                  'height': 300,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': 0,
+                  'posY': 100,
+                  'posZ': 0,
+                  'name': 'backside'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
+
+            yeswecan_setSomeArguments = {
+                  'type': 'plane',
+                  'width': 300,
+                  'height': 30,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': -160,
+                  'posY': 15,
+                  'posZ': 170,
+                  'rotY': 89,
+                  'name': 'leftside'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
+
+            yeswecan_setSomeArguments = {
+                  'type': 'plane',
+                  'width': 300,
+                  'height': 30,
+                  'wSegments': 10,
+                  'hSegments': 10,
+                  'color': 0x00FFFF,
+                  'transparent': true,
+                  'opacity': 0,
+                  'friction': .4,
+                  'restitution': .4,
+                  'posX': 160,
+                  'posY': 15,
+                  'posZ': 170,
+                  'rotY': -89,
+                  'name': 'rightside'
+            }
+            yeswecan.build_thelowpolystand(yeswecan_setSomeArguments);
       }
 }

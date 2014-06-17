@@ -1,26 +1,17 @@
 $(function() {
 
-    /**
-     *
-     * Set the connect page + room number so the user knows where he has to go to connect
-     *
-     */
+      /**
+       *
+       * Set the connect page + room number so the user knows where he has to go to connect
+       *
+       */
 
-
-
-    $('.browser').html(url.currentURL + '/connect.html');
-    $('.room_id').html(room.id);
+      $('.browser').html(url.currentURL + '/connect.html');
+      $('.room_id').html(room.id);
 });
-
-
-var mobile = {
-  connected : false
-};
 
 url.check();
 room.setID();
-
-
 
 /*
 |------------------------------------------------------------------------------------
@@ -28,80 +19,61 @@ room.setID();
 |------------------------------------------------------------------------------------
 */
 
-	var socket = io.connect(url.currentURL);
+var socket = io.connect(url.currentURL);
 
-      /**
-       *
-       * Connect to a room
-       *
-       */
+/**
+ *
+ * Connect to a room
+ *
+ */
+
+socket.on('connect', function() {
+      socket.emit('message', {
+            msg: 'you are connected to the room ' + room.id
+      })
+      socket.emit('room', room.id);
+});
+
+/**
+ *
+ * Do stuff when user is connected
+ *
+ */
+
+socket.on('connected_person', function(data) {
+      console.log('A new user (mobile) is connected');
+      if (room.id == data) {
+            shoot.start = true;
+            $('.info').fadeOut();
+            $('.info-score').addClass('active');
+      }
+});
+
+socket.on('shooting', function(data) {
+      look.theUserIsShooting(mobile.position.gamma, mobile.position.beta);
+});
+
+socket.on('motiondatas', function(data) {
+      mobile.position = data;
+      look.AtTheObjectsMove(data.gamma, data.beta);
+});
 
 
-	socket.on('connect', function() {
-		//console.log('main.js connect', room.id);
-            socket.emit('message', {msg : 'you are connected to the room ' + room.id})
-	      socket.emit('room', room.id);
+socket.on('user_power', function(data) {
+      if (data.power <= 5) {
+            data.color = 'orange';
+      }
+
+      if (data.power == 6) {
+            data.color = 'green';
+      }
+
+      if (data.power >= 7) {
+            data.color = 'red';
+      }
+
+      $('.power').css({
+            'height': (10 * data.power),
+            'background-color': data.color
       });
-
-      /**
-       *
-       * Do stuff when user is connected
-       *
-       */
-
-
-      socket.on('connected_person', function(data)
-      {
-          console.log('A new user (mobile) is connected');
-           if(room.id == data)
-           {
-
-
-                shoot.start = true;
-
-                            $('.info').fadeOut();
-                            //look.theUserIsLockingThePointer();
-                            $('.info-score').addClass('active');
-
-           }
-      });
-
-      socket.on('shooting', function(data) {
-
-        look.theUserIsShooting(mobile.position.gamma, mobile.position.beta);
-
-      });
-
-
-        socket.on('motiondatas', function(data) {
-
-            //console.log('motiondatas', data);
-
-              mobile.position = data;
-
-              //moveRifle(data.gamma, data.beta);
-
-              look.AtTheObjectsMove(data.gamma, data.beta);
-        });
-
-
-        socket.on('user_power', function(data) {
-          console.log('power', data.power);
-           if(data.power <= 5) {
-              data.color = 'orange';
-            }
-
-            if(data.power == 6 ) {
-              data.color = 'green';
-            }
-
-            if(data.power >= 7) {
-              data.color = 'red';
-            }
-
-
-        $('.power').css({ 'height' : (10 * data.power), 'background-color' : data.color });
-
-        })
-
-
+})

@@ -17,15 +17,13 @@ var yeswecan = {
              * Call functions in canwebuildit.js
              *
              */
-
             yeswecan.build_therenderer();
             yeswecan.build_thecamera();
             yeswecan.build_theshootstand();
             yeswecan.build_thelights();
             yeswecan.build_thebullet();
-            yeswecan.build_theRifle();
+            yeswecan.build_therifle();
             yeswecan.build_thecloud();
-
       },
 
       /**
@@ -56,17 +54,13 @@ var yeswecan = {
        */
 
       build_thecamera: function() {
-
             var mainCamera = new THREE.PerspectiveCamera(45, sceneW / sceneH, 1, 10000);
             mainCamera.position.z = 750; // move back
             mainCamera.position.y = 150; // move up
             mainCamera.name = "main";
-
             this.get_thecurrentCam = 0;
             this.get_AllTheCameras = [mainCamera];
-
             yeswecan.get_theSceneCam = yeswecan.get_AllTheCameras[yeswecan.get_thecurrentCam];
-
       },
 
       /**
@@ -172,7 +166,7 @@ var yeswecan = {
 
 
 
-      build_theRifle: function() {
+      build_therifle: function() {
             loader.load('assets/js/models/rifle.js', function(mesh) {
                   mesh.scale.set(20, 20, 20);
                   mesh.position.set(0, 50, 600);
@@ -202,10 +196,8 @@ var yeswecan = {
             switch (random) {
                   case 1:
                         target = new Physijs.CylinderMesh(
-                              new THREE.CylinderGeometry(13, 13, 2, 50, 50),
+                              new THREE.CylinderGeometry(13, 13, 3, 50, 50),
                               new THREE.MeshLambertMaterial({
-                                    // map: targetTexure,
-                                    //color: shoot.getRandomColor(), //0xff8000,
                                     friction: 1,
                                     restitution: 1
                               })
@@ -214,10 +206,8 @@ var yeswecan = {
                         break
                   case 2:
                         target = new Physijs.BoxMesh(
-                              new THREE.CubeGeometry(20, 2, 25, 50, 50),
+                              new THREE.CubeGeometry(20, 3, 25, 50, 50),
                               new THREE.MeshLambertMaterial({
-                                    // map: targetTexure,
-                                    //color: shoot.getRandomColor, // 0xCC0030,
                                     friction: 1,
                                     restitution: 1
                               })
@@ -226,10 +216,8 @@ var yeswecan = {
                         break
                   case 3:
                         target = new Physijs.CylinderMesh(
-                              new THREE.CylinderGeometry(15, 15, 2, 3, 3),
+                              new THREE.CylinderGeometry(15, 15, 3, 3, 3),
                               new THREE.MeshLambertMaterial({
-                                    // map: targetTexure,
-                                    //color: shoot.getRandomColor, //0x66ccff,
                                     friction: 1,
                                     restitution: 1
                               })
@@ -239,7 +227,6 @@ var yeswecan = {
             }
 
             target.material.color.setStyle(shoot.getRandomColor()).offsetHSL(0, 0.5, 0.1);
-
             target.rotation.x = helpMe.calculate('rad', 90);
             target.position.set(180, 65 + y, 230 - z); // 35 - (35 * i)
 
@@ -252,7 +239,6 @@ var yeswecan = {
             target.hit = false;
             target.number = i;
             scene.add(target);
-
 
             constraint = new Physijs.HingeConstraint(
                   target, // First object to be constrained
@@ -274,7 +260,6 @@ var yeswecan = {
                   'speed': speed,
                   'constraint': constraint
             }
-
             targets.push(targetInfo);
       },
 
@@ -289,9 +274,9 @@ var yeswecan = {
             $('.powerIndicator').css({
                   'bottom': 0
             });
+
             shoot.power = 0;
             shoot.way = 'up';
-
 
             bullet = new Physijs.SphereMesh(
                   new THREE.SphereGeometry(2.5, 10, 7),
@@ -309,9 +294,7 @@ var yeswecan = {
             bullet.name = "bullet";
             bullet.shot = false;
             bullet.castShadow = true;
-
             scene.add(bullet);
-
             bullets.push(bullet);
 
             bullet.setAngularFactor(new THREE.Vector3(0, 0, 0));
@@ -335,5 +318,4 @@ var yeswecan = {
                   shoot.clouds = mesh;
             });
       }
-
 }

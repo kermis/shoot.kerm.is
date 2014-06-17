@@ -6,20 +6,17 @@ var levels = [
        *
        */
 
-
       {
             'totalBullets': 20,
             'speed': 1000,
             'time': 200
       },
 
-
       /**
        *
        * LEVEL 2
        *
        */
-
 
       {
             'totalBullets': 20,
@@ -33,20 +30,17 @@ var levels = [
        *
        */
 
-
       {
             'totalBullets': 18,
             'speed': 1200,
             'time': 110
       },
 
-
       /**
        *
        * LEVEL 4
        *
        */
-
 
       {
             'totalBullets': 18,
@@ -60,20 +54,17 @@ var levels = [
        *
        */
 
-
       {
             'totalBullets': 14,
             'speed': 1400,
             'time': 100
       },
 
-
       /**
        *
        * LEVEL 6
        *
        */
-
 
       {
             'totalBullets': 15,
@@ -87,20 +78,17 @@ var levels = [
        *
        */
 
-
       {
             'totalBullets': 15,
             'speed': 1600,
             'time': 110
       },
 
-
       /**
        *
        * LEVEL 8
        *
        */
-
 
       {
             'totalBullets': 15,
@@ -114,13 +102,11 @@ var levels = [
        *
        */
 
-
       {
             'totalBullets': 10,
             'speed': 2000,
             'time': 50
       },
-
 
       /**
        *
@@ -134,5 +120,4 @@ var levels = [
             'speed': 2000,
             'time': 40
       }
-
 ]

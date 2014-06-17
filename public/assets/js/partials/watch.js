@@ -7,8 +7,6 @@ var look = {
        */
 
       theWindowIsResizing: function() {
-            console.log('resize');
-
             /**
              *
              * store scene dimensions
@@ -61,8 +59,6 @@ var look = {
 
                   }
 
-                  // #TODO delay on direct shooten
-
                   /**
                    *
                    * Check if current bullet is alreay shot
@@ -78,7 +74,6 @@ var look = {
                         bullet.setAngularVelocity(new THREE.Vector3(-10, 0, 0));
                         bullet.shot = true;
                         shoot.reload = true;
-
                         firedBullets.push(bullet);
 
                         /**
@@ -89,40 +84,30 @@ var look = {
 
                         createjs.Sound.play("shoot", {
                               volume: .3
-                        }); // #PLAY SOUND
+                        });
 
                         /**
                          *
-                         * Check if we have to reload a new ball
+                         * Check if we have to reload a new bullet
                          *
                          */
 
                         if (shoot.reload) {
 
-                              shoot.totalBullets--; // update total balls
+                              shoot.totalBullets--; // update total bullets
 
                               setTimeout(function() {
 
                                     /**
                                      *
-                                     * Check if we have balls left
+                                     * Check if we have bullets left
                                      *
                                      */
 
 
-                                    if (shoot.totalBullets == 0) { // no balls left so stop the game
-
-                                          setTimeout(function() {
-                                                shoot.endGame();
-                                          }, 1000);
-
-
-                                          // $('.the_level span').text(shoot.level + 1);
-                                          // $('.the_points span').text(shoot.totalPoints);
-                                          // $('.next_level span').text(shoot.level + 2);
-
-                                          // $('.totall').addClass('score');
-                                    } else { // create new ball
+                                    if (shoot.totalBullets == 0) { // no bullets left so stop the game
+                                          shoot.endGame();
+                                    } else { // create new bullet
 
                                           /**
                                            *
@@ -132,7 +117,7 @@ var look = {
 
                                           createjs.Sound.play("reload", {
                                                 volume: .3
-                                          }); // #PLAY SOUND
+                                          });
 
                                           setTimeout(function() { // set a timeout of 0 so we don't halt execution
                                                 yeswecan.build_thebullet();
@@ -159,7 +144,6 @@ var look = {
 
             if (shoot.start) {
                   if (shoot.controller == 'mouse') { // check if controller is mouse
-
                         shoot.movementX = event.movementX ||
                               event.mozMovementX ||
                               event.webkitMovementX ||
@@ -191,18 +175,18 @@ var look = {
 
             if (!bullet.shot) {
                   if (shoot.controller == 'mobile') {
-                        bullet.position.x += x * 0.6;
-                        shoot.rifle.position.x += x * 0.6;
+                        // bullet.position.x += x * 0.6;
+                        // shoot.rifle.position.x += x * 0.6;
 
-                        // ball.position.y = y * 0.6;
-                        // shoot.rifle.position.y = y * 0.6;
+                        bullet.position.x += x * 0.6;
+                        bullet.position.y -= y * 0.6;
+                        shoot.rifle.position.x += x * 0.6;
+                        shoot.rifle.position.y -= y * 0.6;
                   } else if (shoot.controller == 'mouse') {
                         bullet.position.x += x * 0.9;
                         bullet.position.y -= y * 0.9;
-
                         shoot.rifle.position.x += x * 0.9;
                         shoot.rifle.position.y -= y * 0.9;
-
                   }
 
                   bullet.__dirtyPosition = true;
@@ -211,7 +195,6 @@ var look = {
                   bullet.__dirtyPosition = false;
 
             }
-
       },
 
       theScreenIsGoingFullscreen: function() {
@@ -234,21 +217,19 @@ var look = {
             console.log('locked');
 
             if (document.mozPointerLockElement === elem ||
-                  document.webkitPointerLockElement === elem) {} else {
-                  console.log("Pointer Lock was lost."); // #TODO SHOW ERROR MESSAGE
+                  document.webkitPointerLockElement === elem) {
+
+            } else {
+                  //console.log("Pointer Lock was lost."); // #TODO SHOW ERROR MESSAGE
             }
 
       },
 
       thePointerLockHasGoneWrong: function() {
-
-            console.log("Error while locking pointer."); // #TODO ERROR MESSAGE
-
+            //console.log("Error while locking pointer."); // #TODO ERROR MESSAGE
       },
 
       theUserIsLockingThePointer: function() {
-
-
             elem = document.getElementById("container");
 
             // Start by going fullscreen with the element. Current implementations
@@ -260,14 +241,11 @@ var look = {
             elem.webkitRequestFullscreen;
 
             elem.requestFullscreen();
-
       },
 
       theKeyIsGoingDown: function(event) {
-
             if (shoot.start) {
                   switch (event.keyCode) {
-
                         case 40: // down
                               yeswecan.get_theSceneCam.position.z += 10;
                               break;
@@ -289,6 +267,36 @@ var look = {
 
                               yeswecan.get_theSceneCam = yeswecan.get_AllTheCameras[yeswecan.get_thecurrentCam];
                               break;
+                        case 49: // shift 1
+                              shoot.replayLevel(0);
+                              break;
+                        case 50: // shift 2
+                              shoot.replayLevel(1);
+                              break;
+                        case 51: // shift 3
+                              shoot.replayLevel(2);
+                              break;
+                        case 52: // shift 4
+                              shoot.replayLevel(3);
+                              break;
+                        case 53: // shift 5
+                              shoot.replayLevel(4);
+                              break;
+                        case 54: // shift 6
+                              shoot.replayLevel(5);
+                              break;
+                        case 55: // shift 7
+                              shoot.replayLevel(6);
+                              break;
+                        case 56: // shift 8
+                              shoot.replayLevel(7);
+                              break;
+                        case 57: // shift 9
+                              shoot.replayLevel(8);
+                              break;
+                        case 48: // shift 0
+                              shoot.replayLevel(9);
+                              break;
                   }
             } else {
                   if (shoot.isNextLevel) {
@@ -303,17 +311,13 @@ var look = {
                                           shoot.replayLevel(shoot.level);
                                     }
                                     break;
-
                         }
                   }
             }
 
             if (event.keyCode == 27 && !shoot.infoVisible) { // esc
-                  //event.preventDefault();
+                  event.preventDefault();
                   shoot.pause()
-
             }
-
-
       }
 }

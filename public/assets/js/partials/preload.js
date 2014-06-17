@@ -4,31 +4,25 @@
  *
  */
 
-
 $(function() {
-    var queue = new createjs.LoadQueue();
-    queue.installPlugin(createjs.Sound);
-    queue.on("complete", handleComplete, this);
-    queue.on("progress", handleProgress, this);
-    queue.loadManifest([
-        {
+      var queue = new createjs.LoadQueue();
+      queue.installPlugin(createjs.Sound);
+      queue.on("complete", handleComplete, this);
+      queue.on("progress", handleProgress, this);
+      queue.loadManifest([{
             id: "ammo",
             src: "/assets/js/libs/ammo.js"
-        }, {
+      }, {
             id: "schietkraam",
             src: "/assets/js/models/schietkraam.js"
-        }, {
+      }, {
             id: "shoot",
             src: "/assets/sounds/shoot.mp3"
-        },  {
+      }, {
             id: "reload",
             src: "/assets/sounds/reload.mp3"
-        }
-    ]);
-
-
+      }]);
 })
-
 
 /**
  *
@@ -36,22 +30,13 @@ $(function() {
  *
  */
 
-
-
 function handleComplete() {
-     $('.overlay').delay(10).fadeOut('slow', function() {
-        $('.info').addClass('slide_down');
-     });
+      $('.overlay').delay(10).fadeOut('slow', function() {
+            $('.info').addClass('slide_down');
+      });
 
-    shoot.init();
-    shoot.animate();
-
-    // setInterval(function() {
-    //     // scene.simulate();
-
-
-    // }, 1000 / 60);
-
+      shoot.init();
+      shoot.animate();
 }
 
 /**
@@ -60,10 +45,8 @@ function handleComplete() {
  *
  */
 
-
-
 function handleProgress(e) {
-    var percentLoaded = Math.round(e.loaded * 100);
-    $('.percentLoaded').html(percentLoaded + ' %');
-    $('.progress').css('width', percentLoaded + '%')
+      var percentLoaded = Math.round(e.loaded * 100);
+      $('.percentLoaded').html(percentLoaded + ' %');
+      $('.progress').css('width', percentLoaded + '%')
 }

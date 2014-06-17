@@ -13,10 +13,10 @@ var shoot = {
       totalPoints: 0,
       totalScored: 0,
       totalMissed: 0,
+      globalPoints: 0,
       rendering: true,
       infoVisible: true,
       isNextLevel: false,
-
 
       /**
        *
@@ -53,7 +53,6 @@ var shoot = {
 
             physics.build_scene();
             shoot.createStats();
-
 
             /**
              *
@@ -119,19 +118,6 @@ var shoot = {
              */
 
             shoot.updateInfo();
-
-            // set bullet fixed after
-
-            // for (var i = 0; i < firedBullets.length; i++) {
-            //       // console.log('pos Y', firedBullets[i].position.y);
-
-            //       if (firedBullets[i].position.y <= 5) {
-            //             firedBullets[i].setAngularFactor(new THREE.Vector3(0, 0, 0));
-            //             firedBullets[i].setLinearFactor(new THREE.Vector3(0, 0, 0));
-            //             firedBullets[i].setLinearVelocity(new THREE.Vector3(0, 0, 0));
-            //             firedBullets[i].setAngularVelocity(new THREE.Vector3(0, 0, 0));
-            //       }
-            // }
       },
 
       /**
@@ -155,15 +141,14 @@ var shoot = {
              *
              */
 
-
-            shoot.checkDistanceTo();
+            shoot.checkRotationTargets();
             setTimeout(function() {
-                  shoot.checkDistanceTo();
+                  shoot.checkRotationTargets();
             }, 8);
 
       },
 
-      checkDistanceTo: function() {
+      checkRotationTargets: function() {
             for (var i = 0; i < targets.length; i++) {
                   if (!targets[i].hit) {
                         if ((targets[i].target.rotation.x).toFixed(1) <= helpMe.calculate('rad', 10)) { //!= 1.6
@@ -183,7 +168,7 @@ var shoot = {
 
             shoot.totalScored++;
             shoot.totalMissed--;
-            shoot.totalPoints += targets[ringnumber].target.points; //levels[shoot.level].pointsPerGoal;
+            shoot.totalPoints += targets[ringnumber].target.points;
 
             /**
              *
@@ -191,44 +176,14 @@ var shoot = {
              *
              */
 
-
-            var materialFront = new THREE.MeshBasicMaterial({
-                  color: targets[ringnumber].target.material.color,
-                  transparent: true,
-                  opacity: 1
-            });
-            var materialSide = new THREE.MeshBasicMaterial({
-                  color: 0xFFFFFF,
-                  transparent: true,
-                  opacity: .5
-            });
-            var materialArray = [materialFront, materialSide];
-
-            var textGeom = new THREE.TextGeometry(targets[ringnumber].target.points, {
-                  size: 8,
-                  height: 2,
-                  curveSegments: 3,
-                  font: "helvetiker",
-                  weight: "bold",
-                  style: "normal",
-                  bevelThickness: 0,
-                  bevelSize: 0,
-                  bevelEnabled: false,
-                  material: 0,
-                  extrudeMaterial: 1
-            });
-
+            createTextOptions();
+            var textGeom = new THREE.TextGeometry(targets[ringnumber].target.points, setOptions(8));
             var textMaterial = new THREE.MeshFaceMaterial(materialArray);
             var textMesh = new THREE.Mesh(textGeom, textMaterial);
-
             textGeom.computeBoundingBox();
             var textWidth = textGeom.boundingBox.max.x - textGeom.boundingBox.min.x;
-
-
             textMesh.position.set(targets[ringnumber].target.position.x, targets[ringnumber].target.position.y + 20, targets[ringnumber].target.position.z + 30);
-            //textMesh.position.set(0, 80, 300);
             textMesh.name = 'points';
-
             scene.add(textMesh);
 
             /**
@@ -292,7 +247,6 @@ var shoot = {
                         scene.remove(targets[i].target);
                         scene.remove(targets[i].stand);
                         scene.remove(targets[i].constraint);
-                        //targets.splice(i, 1);
                   }
             }
       },
@@ -337,8 +291,6 @@ var shoot = {
                         timeRemaining = levels[shoot.level].time;
                         shoot.totalBullets = levels[shoot.level].totalBullets;
                         shoot.totalPoints = 0;
-                        // shoot.totalScored = 0;
-                        // shoot.totalMissed = 0;
 
                         reloadScene();
 
@@ -352,7 +304,6 @@ var shoot = {
                         shoot.gameOver = true;
 
                         $('.game-over').addClass('slide-up');
-
                         $('.totalScoreGame').html(shoot.globalPoints);
                         $('.totalScoredGame').html(shoot.totalScored);
                         $('.totalMissedGame').html(shoot.totalMissed);
@@ -370,40 +321,29 @@ var shoot = {
       },
 
       addTargets: function() {
-
             if (shoot.start) {
-
-
-                  // timeRemaining -= 1;
-                  //game.updateScoreInfo();
-
                   var random = Math.ceil(Math.random() * 3);
                   var place = Math.ceil(Math.random() * 3);
 
                   switch (place) {
                         case 1:
-                              yeswecan.addTarget(t, 0, 0, .7, random);
+                              yeswecan.addTarget(t, 0, 0, .7 * (levels[shoot.level].speed / 1000), random);
                               break;
                         case 2:
-                              yeswecan.addTarget(t, 38, 30, .6, random);
+                              yeswecan.addTarget(t, 38, 30, .6 * (levels[shoot.level].speed / 1000), random);
                               break;
                         case 3:
-                              yeswecan.addTarget(t, 96, 50, .8, random);
+                              yeswecan.addTarget(t, 96, 50, .8 * (levels[shoot.level].speed / 1000), random);
                               break;
                   }
 
-
                   t++;
             }
-
-            // setTimeout(function() {
-            //       if (shoot.start) {
-            //             shoot.addTargets();
-            //       }
-            // }, 1000)
       },
 
       timeLeft: function(where) {
+            console.log('where', where);
+
             //ticks once a second for the score, checks for remaining time
             if (timeRemaining == 0) {
                   shoot.endGame();
@@ -412,7 +352,6 @@ var shoot = {
             if (shoot.start && timeRemaining > 0) {
 
                   timeRemaining -= 1;
-                  //game.updateScoreInfo();
 
                   setTimeout(function() {
                         if (shoot.start) {
@@ -433,7 +372,6 @@ var shoot = {
       },
 
       pause: function() {
-
             if (!shoot.start) {
                   $('.pause').fadeOut(100);
                   shoot.start = true;

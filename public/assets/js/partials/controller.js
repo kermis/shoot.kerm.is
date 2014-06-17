@@ -13,40 +13,28 @@ var powerCheck;
 
 $(function() {
 
-	socket.on('connect', function() {
-		socket.emit('room', room_id);
-		socket.emit('message', {message : 'Controller joined to the room : ' + room_id});
+      socket.on('connect', function() {
+            socket.emit('room', room_id);
+            socket.emit('message', {
+                  message: 'Controller joined to the room : ' + room_id
+            });
 
-		socket.on('checkroom', function(data) {
-		    $('#controller_message').text(data);
+            socket.on('checkroom', function(data) {
+                  $('#controller_message').text(data);
 
-                            socket.emit('connected_user', room_id);
-	           });
+                  socket.emit('connected_user', room_id);
+            });
 
-                        socket.on('connected_person', function() {
-                        	console.log('connected person controller.js');
-                        });
+            socket.on('connected_person', function() {
+                  //console.log('connected person controller.js');
+            });
 
 
-	});
+      });
 
-            $('.shoot').on('click', function() {
-                console.log('test');
-                socket.emit('shoot', {message :  room_id});
-            })
-
-            // $('.shoot').on('touchstart', function() {
-            //     power = 0;
-            //     howMuchPower();
-            // });
-
-            // $('.shoot').on('touchend', function() {
-            //     socket.emit('shoot', {message :  room_id, power : power});
-
-            //     clearInterval(powerCheck);
-
-            // });
-
+      $('.shoot').on('click', function() {
+            socket.emit('shoot', {
+                  message: room_id
+            });
+      })
 });
-
-

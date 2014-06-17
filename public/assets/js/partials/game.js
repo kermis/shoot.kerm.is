@@ -68,6 +68,7 @@ var startGame = function() {
       setTimeout(function() {
             shoot.start = true;
       }, 500);
+
       shoot.timeLeft('play clicked');
       $(this).blur();
 }
@@ -142,3 +143,43 @@ var targetStandMaterial = new THREE.MeshBasicMaterial({
       transparent: true,
       opacity: .2
 });
+
+/**
+ *
+ * Text material
+ *
+ */
+var textOptions, materialFront, materialSide, materialArray, textMaterial;
+
+var createTextOptions = function() {
+      materialFront = new THREE.MeshBasicMaterial({
+            color: 0xFFFFFF,
+            transparent: true,
+            opacity: 1
+      });
+      materialSide = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: .8
+      });
+      materialArray = [materialFront, materialSide];
+      textMaterial = new THREE.MeshFaceMaterial(materialArray);
+}
+
+var setOptions = function(size) {
+      var textOptions = {
+            size: size,
+            height: 10,
+            curveSegments: 3,
+            font: "helvetiker",
+            weight: "bold",
+            style: "normal",
+            bevelThickness: 0,
+            bevelSize: 0,
+            bevelEnabled: false,
+            material: 0,
+            extrudeMaterial: 1
+      }
+
+      return textOptions;
+}

@@ -56,7 +56,9 @@ var look = {
                         y = -2; //100 * shoot.power;
                         z = -1400;
                   } else if (shoot.controller == 'leap') {
-
+                        x = 0; //(event.x - sceneW)+ sceneW /2;
+                        y = -2; //100 * shoot.power;
+                        z = -1400;
                   }
 
                   /**
@@ -175,13 +177,10 @@ var look = {
 
             if (!bullet.shot) {
                   if (shoot.controller == 'mobile') {
-                        // bullet.position.x += x * 0.6;
-                        // shoot.rifle.position.x += x * 0.6;
-
-                        bullet.position.x += x * 0.6;
-                        bullet.position.y -= y * 0.6;
-                        shoot.rifle.position.x += x * 0.6;
-                        shoot.rifle.position.y -= y * 0.6;
+                        shoot.rifle.position.x = x * 1.7;
+                        bullet.position.x = shoot.rifle.position.x + 0.6;
+                        shoot.rifle.position.y = 20 + Math.abs(y * 1.9);
+                        bullet.position.y = shoot.rifle.position.y + 7.9;
                   } else if (shoot.controller == 'mouse') {
                         bullet.position.x += x * 0.9;
                         bullet.position.y -= y * 0.9;
@@ -246,26 +245,10 @@ var look = {
       theKeyIsGoingDown: function(event) {
             if (shoot.start) {
                   switch (event.keyCode) {
-                        case 40: // down
-                              yeswecan.get_theSceneCam.position.z += 10;
-                              break;
-                        case 37: // links
-                              yeswecan.get_theSceneCam.rotation.y -= 0.1;
-                              break;
-                        case 39: // rechts
-                              yeswecan.get_theSceneCam.rotation.y += 0.1;
-                              break;
-                        case 38: // up
-                              yeswecan.get_theSceneCam.position.z -= 10;
-                              break;
                         case 32: // spatie
-                              if (yeswecan.get_thecurrentCam < yeswecan.get_AllTheCameras.length - 1) {
-                                    yeswecan.get_thecurrentCam++;
-                              } else {
-                                    yeswecan.get_thecurrentCam = 0;
+                              if (shoot.controller == "leap") {
+                                    look.theUserIsShooting('shoot');
                               }
-
-                              yeswecan.get_theSceneCam = yeswecan.get_AllTheCameras[yeswecan.get_thecurrentCam];
                               break;
                         case 49: // shift 1
                               shoot.replayLevel(0);
@@ -302,6 +285,7 @@ var look = {
                   if (shoot.isNextLevel) {
                         switch (event.keyCode) {
                               case 32: // spatie
+                                    console.log('spatie');
                                     if (!shoot.gameOver) {
                                           shoot.nextLevel(shoot.level);
                                     }

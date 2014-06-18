@@ -33,8 +33,21 @@ var room = {
       },
 
       getID: function() {
-            var id = room.queryParam('roomNumber');
-            return id.toUpperCase();
+            var id;
+            id = room.queryParam('roomNumber');
+
+            if (!id) {
+                  id = window.location.hash;
+                  id = id.replace('#', '');
+            }
+
+            if (!id) {
+                  id = false;
+            } else {
+                  id = id.toUpperCase();
+            }
+
+            return id;
       },
 
       queryParam: function(name) {

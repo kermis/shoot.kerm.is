@@ -1,4 +1,9 @@
 var motionD;
+var roomID;
+
+$(function() {
+      roomID = room.getID();
+});
 
 /**
  *
@@ -45,30 +50,36 @@ var updateOrientation = function(e) {
       compass = parseFloat(e.alpha);
 
       // update the gesture buffer
-      updateRollGesture(tiltZAxis);
+      updateRollGesture(tiltZAxis, tiltXAxis);
 }
+
+window.addEventListener('deviceorientation', updateOrientation, false);
+
 
 var tiltBuffer = new ValueBuffer(10);
 var lastTiltValue = 0;
 
-var updateRollGesture = function(tilt) {
-      var tiltDelta = tilt - lastTiltValue;
+var updateRollGesture = function(tiltX, tiltY) {
+      var tiltDelta = tiltX - lastTiltValue;
       tiltBuffer.update(tiltDelta);
-      lastTiltValue = tilt;
+      lastTiltValue = tiltX;
 
-      console.log('update gesture', tilt.toFixed(0));
-
-
-      if (tilt.toFixed(0) == 0 || tilt.toFixed(0) == -1 || tilt.toFixed(0) == 1)
-            tilt = 0;
+      if (tiltX.toFixed(0) == 0 || tiltX.toFixed(0) == -1 || tiltX.toFixed(0) == 1)
+            tiltX = 0;
 
       motionD = {
-            gamma: tilt.toFixed(0),
-            beta: tilt,
-            room: room.getID()
+            gamma: tiltX.toFixed(0),
+            beta: tiltY.toFixed(0),
+            room: roomID
       }
 
-      socket.emit('motiondata', motionD);
+      if (motionD.room != false) {
+            if (allowed) {
+                  setTimeout(function() {
+                        socket.emit('motiondata', motionD);
+                  }, 1000 / 60);
+            }
+      }
 }
 
 
@@ -76,8 +87,128 @@ var updateRollGesture = function(tilt) {
 // let the user know if there's no accelerometer data available after 1 second of listening
 // (for desktops and non-capable mobile devices).
 // This would be a good place to conditionally fall back to touch-based controls
-setTimeout(function() {
-      if ((isNaN(tiltZAxis) && isNaN(tiltXAxis)) || (tiltZAxis == 0 && tiltXAxis == 0)) {
-            alert('You don\'t seem to have an accelerometer, which is required for this demo.');
-      }
-}, 1000);
+// setTimeout(function(){
+//   if( (isNaN(tiltZAxis) && isNaN(tiltXAxis)) || (tiltZAxis == 0 && tiltXAxis == 0) ) {
+//     alert('You don\'t seem to have an accelerometer, which is required for this demo.');
+//   }
+// },1000);
+
+
+
+
+
+
+/**
+ *
+ * DEVICE ORIENTATION V1
+ *
+ */
+
+
+
+// $(function() {
+
+
+
+//    if(window.DeviceOrientationEvent) {
+//          window.addEventListener('deviceorientation', devOrientHandler, false);
+//    }
+
+//             // if(window.DeviceMotionEvent) {
+//             //     window.addEventListener('devicemotion', devMotionHandler, false);
+//             // }
+
+// });
+
+
+// function devOrientHandler(eventData) {
+
+//     console.log('event', eventData);
+
+//     motionD = {
+//         gamma: eventData.gamma,
+//         beta: eventData.beta,
+//         room : room.getID()
+//     }
+
+//     socket.emit('motiondata', motionD );
+// }
+
+// // function devMotionHandler(eventData) {
+
+
+
+// //     if(i == 0) { alert(eventData.rotationRate.alpha); i++; }
+
+// motionD = {
+//       gamma: eventData.gamma,
+//       beta: eventData.beta,
+//       room : room.getID()
+//   }
+
+//   socket.emit('motiondata', motionD );
+// // }
+
+
+// // setInterval(function() {
+// //             socket.emit('motiondata', motionD);
+// // }, 200);
+
+
+
+
+
+
+
+
+
+/**
+ *
+ * SWIPE
+ *
+ */
+
+
+
+
+
+
+// $(function() {
+//      var scene = document.getElementById('container');
+
+
+//      // mouse/touch tracking ---------------------------------------------------------------------------
+//       var mouseX = 0;
+//       function mouseMoved(e) {
+//         var x = (e.touches) ? e.touches[0].clientX : e.clientX;
+//         mouseX = (x - Math.round(window.innerWidth / 2)) * 100;
+
+//            motionD = {
+//                 gamma: mouseX,
+
+//                 room : room.getID()
+//             }
+
+//         socket.emit('motiondata', motionD );
+
+
+//       }
+
+//      // document.addEventListener( 'mousemove', mouseMoved, false );
+//       document.addEventListener( 'touchmove', mouseMoved, false );
+
+//       // mobile helpers ---------------------------------------------------------------------------------
+//       var lockTouchScreen = function( isLocked ) {
+//         ( isLocked == false ) ? document.ontouchmove = null : document.ontouchmove = function(e) { e.preventDefault(); };
+//       };
+
+//       // lock screen for scrolling on mouse/touch of interactive scene
+//       scene.addEventListener( 'touchstart', function(e){
+//         lockTouchScreen(true);
+//       }, false );
+
+//       document.addEventListener( 'touchend', function(e){
+//         lockTouchScreen(false);
+//       }, false );
+
+// })

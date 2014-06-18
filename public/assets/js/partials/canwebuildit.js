@@ -21,7 +21,12 @@ var yeswecan = {
             yeswecan.build_thecamera();
             yeswecan.build_theshootstand();
             yeswecan.build_thelights();
+
+
+
             yeswecan.build_thebullet();
+
+
             yeswecan.build_therifle();
             yeswecan.build_thecloud();
       },
@@ -79,7 +84,7 @@ var yeswecan = {
 
             yeswecan_setSomeArguments = {
                   'type': 'plane',
-                  'width': 1000,
+                  'width': 2000,
                   'height': 1000,
                   'wSegments': 10,
                   'hSegments': 10,
@@ -296,6 +301,7 @@ var yeswecan = {
             bullet.castShadow = true;
             scene.add(bullet);
             bullets.push(bullet);
+            shoot.allBullets.push(bullet);
 
             bullet.setAngularFactor(new THREE.Vector3(0, 0, 0));
             bullet.setLinearFactor(new THREE.Vector3(0, 0, 0));

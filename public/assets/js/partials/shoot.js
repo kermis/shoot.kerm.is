@@ -14,6 +14,8 @@ var shoot = {
       totalScored: 0,
       totalMissed: 0,
       globalPoints: 0,
+      allBullets: [],
+      currentBullet: 0,
       rendering: true,
       infoVisible: true,
       isNextLevel: false,
@@ -91,7 +93,8 @@ var shoot = {
                   setTimeout(function() {
                         if (shoot.start) {
                               requestAnimationFrame(shoot.addTargets);
-                              scoreTick();
+                              // scoreTick();
+                              // shoot.timeLeft('animate');
                         }
                   }, levels[shoot.level].speed / 60);
                   counter = 0;
@@ -118,6 +121,17 @@ var shoot = {
              */
 
             shoot.updateInfo();
+
+            /**
+             *
+             * Rotate clouds
+             *
+             */
+            if (shoot.clouds) {
+                  if (shoot.start) {
+                        shoot.clouds.rotation.y += helpMe.calculate('rad', 0.05);
+                  }
+            }
       },
 
       /**
@@ -150,7 +164,7 @@ var shoot = {
 
       checkRotationTargets: function() {
             for (var i = 0; i < targets.length; i++) {
-                  if (!targets[i].hit) {
+                  if (!targets[i].hit && !targets[i].removed) {
                         if ((targets[i].target.rotation.x).toFixed(1) <= helpMe.calculate('rad', 10)) { //!= 1.6
                               targets[i].hit = true;
                               shoot.score(targets[i].target.number);
@@ -176,7 +190,7 @@ var shoot = {
              *
              */
 
-            createTextOptions();
+            createTextOptions(targets[ringnumber].target.material.color, 0xFFFFFF);
             var textGeom = new THREE.TextGeometry(targets[ringnumber].target.points, setOptions(8));
             var textMaterial = new THREE.MeshFaceMaterial(materialArray);
             var textMesh = new THREE.Mesh(textGeom, textMaterial);
@@ -241,12 +255,20 @@ var shoot = {
 
       moveTargets: function() {
             for (var i = 0; i < targets.length; i++) {
-                  targets[i].stand.position.x -= targets[i].speed;
-                  targets[i].stand.__dirtyPosition = true;
-                  if (targets[i].target.position.x < -175) {
-                        scene.remove(targets[i].target);
-                        scene.remove(targets[i].stand);
-                        scene.remove(targets[i].constraint);
+
+                  if (!targets[i].removed) {
+                        targets[i].stand.position.x -= targets[i].speed;
+                        targets[i].stand.__dirtyPosition = true;
+                        if (targets[i].target.position.x < -175) {
+                              scene.remove(targets[i].constraint);
+                              scene.remove(targets[i].target);
+                              scene.remove(targets[i].stand);
+                              scene.remove(targets[i].speed);
+                              //targets.splice(i, 1);
+                              targets[i] = {
+                                    removed: true
+                              };
+                        }
                   }
             }
       },
@@ -274,30 +296,41 @@ var shoot = {
                   right: '500%'
             });
 
+            shoot.start = false;
+
             //only do this after the big ticket is gone from the screen
             setTimeout(function() {
                   $('.big').remove();
 
-                  if (shoot.level < levels.length - 1) {
+                  if (type == 'replay') {
 
-                        if (type == 'next') {
-                              shoot.globalPoints += shoot.totalPoints;
-                              shoot.level++;
-                        } else {
-                              shoot.level = i;
-                        }
+                        shoot.level = i;
+                  }
 
-                        $('.info-score').addClass('active');
-                        timeRemaining = levels[shoot.level].time;
-                        shoot.totalBullets = levels[shoot.level].totalBullets;
-                        shoot.totalPoints = 0;
+                  if (type == 'next') {
+                        shoot.globalPoints += shoot.totalPoints;
+                        shoot.level++;
+                  }
 
-                        reloadScene();
+                  console.log(type, i);
 
-                        shoot.start = true;
-                        shoot.isNextLevel = false;
+                  if (shoot.level <= levels.length - 1) {
 
-                        shoot.timeLeft('reset Game');
+                        setTimeout(function() {
+
+
+
+                              console.log(shoot.level)
+                              $('.info-score').addClass('active');
+                              shoot.totalBullets = levels[shoot.level].totalBullets;
+                              shoot.totalPoints = 0;
+                              reloadScene();
+                              shoot.start = true;
+                              shoot.isNextLevel = false;
+                              timeRemaining = levels[shoot.level].time;
+                              shoot.timeLeft('reset Game');
+                        }, 500);
+
 
                   } else {
                         shoot.globalPoints += shoot.totalPoints;
@@ -372,7 +405,7 @@ var shoot = {
       },
 
       pause: function() {
-            if (!shoot.start) {
+            if (!shoot.start || !shoot.infoVisible) {
                   $('.pause').fadeOut(100);
                   shoot.start = true;
                   shoot.timeLeft('pause fadeout'); //#REMOVE

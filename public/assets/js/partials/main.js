@@ -10,6 +10,8 @@ $(function() {
       $('.room_id').html(room.id);
 });
 
+var mobile = {};
+
 url.check();
 room.setID();
 
@@ -31,7 +33,7 @@ socket.on('connect', function() {
       socket.emit('message', {
             msg: 'you are connected to the room ' + room.id
       })
-      socket.emit('room', room.id);
+      socket.emit('room', room.id, 'browser');
 });
 
 /**
@@ -41,11 +43,10 @@ socket.on('connect', function() {
  */
 
 socket.on('connected_person', function(data) {
-      console.log('A new user (mobile) is connected');
       if (room.id == data) {
-            shoot.start = true;
-            $('.info').fadeOut();
-            $('.info-score').addClass('active');
+            $('.chose_socket .play').removeClass('hide');
+            shoot.controller = "mobile";
+            shoot.showNotification('Smartphone Connection');
       }
 });
 
@@ -54,10 +55,23 @@ socket.on('shooting', function(data) {
 });
 
 socket.on('motiondatas', function(data) {
-      mobile.position = data;
-      look.AtTheObjectsMove(data.gamma, data.beta);
+      if (shoot.start) {
+            mobile.position = data;
+            look.AtTheObjectsMove(data.gamma, data.beta);
+      }
 });
 
+socket.on('mobile_disconnect', function() {
+      if (shoot.controller == 'mobile') {
+            shoot.showNotification('Smartphone Connection lost')
+
+            if (shoot.start && !shoot.infoVisible) {
+                  shoot.pause();
+            } else {
+                  $('.chose_socket .play').removeClass('hide');
+            }
+      }
+});
 
 socket.on('user_power', function(data) {
       if (data.power <= 5) {

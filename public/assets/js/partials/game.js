@@ -1,5 +1,10 @@
 $(function() {
 
+
+      // override the console log
+      console.log = function() {};
+
+
       //redirect if on mobile
       if (Modernizr.touch) {
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -61,16 +66,17 @@ var goBack = function() {
 
 var startGame = function() {
       $('.info').removeClass('slide_down');
-      look.theUserIsLockingThePointer();
+      //look.theUserIsLockingThePointer();
       $('.info-score').addClass('active');
       shoot.infoVisible = false;
 
       setTimeout(function() {
             shoot.start = true;
+            shoot.timeLeft('play clicked');
       }, 500);
 
-      shoot.timeLeft('play clicked');
-      $(this).blur();
+      this.blur();
+
 }
 
 var addHighscore = function() {
@@ -99,12 +105,37 @@ var addHighscore = function() {
       });
 }
 
+
+
+var reloadScene = function() {
+
+      $.each(scene.children, function(index, child) {
+            if (child != undefined) {
+                  if (child.name == 'target' || child.name == 'constraint' || child.name == 'bullet') {
+                        //     console.log('remove');
+                        // scene.remove(child);
+                        removeObject.push(child);
+                  }
+            }
+      });
+      for (var i = 0; i < removeObject.length; i++) {
+            scene.remove(removeObject[i]);
+      }
+      bullets = [];
+
+      targets = [];
+      t = 0;
+
+      yeswecan.build_thebullet();
+
+}
+
 /**
  *
  * Global Vars
  *
  */
-
+var removeObject = [];
 var container = document.getElementById('container');
 
 var /* camera, */ scene, renderer;
@@ -151,16 +182,16 @@ var targetStandMaterial = new THREE.MeshBasicMaterial({
  */
 var textOptions, materialFront, materialSide, materialArray, textMaterial;
 
-var createTextOptions = function() {
+var createTextOptions = function(colorFront, colorSide) {
       materialFront = new THREE.MeshBasicMaterial({
-            color: 0xFFFFFF,
+            color: colorFront,
             transparent: true,
             opacity: 1
       });
       materialSide = new THREE.MeshBasicMaterial({
-            color: 0x000000,
+            color: colorSide,
             transparent: true,
-            opacity: .8
+            opacity: .5
       });
       materialArray = [materialFront, materialSide];
       textMaterial = new THREE.MeshFaceMaterial(materialArray);
@@ -169,7 +200,7 @@ var createTextOptions = function() {
 var setOptions = function(size) {
       var textOptions = {
             size: size,
-            height: 10,
+            height: 5,
             curveSegments: 3,
             font: "helvetiker",
             weight: "bold",

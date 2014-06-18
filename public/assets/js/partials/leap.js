@@ -21,26 +21,26 @@ var leap = {
 
       onDisconnect: function() {
             $('.chose_leap .play').addClass('hide');
-            basket.controller = 'mouse';
-            basket.showNotification('Leap Disconnected');
+            shoot.controller = 'mouse';
+            shoot.showNotification('Leap Disconnected');
 
-            if (basket.start && !basket.infoVisible) {
-                  basket.pause();
+            if (shoot.start && !shoot.infoVisible) {
+                  shoot.pause();
             }
       },
 
       onFrame: function(frame) {
             try {
                   if (shoot.start) {
-                        if (!ball.shot) {
+                        if (!bullet.shot) {
                               this.hands = frame.hands;
 
-                              ball.position.x = Math.ceil(this.hands[0].stabilizedPalmPosition[0] * 1.4);
-                              ball.position.y = Math.ceil(this.hands[0].stabilizedPalmPosition[1] * 1.4);
                               shoot.rifle.position.x = Math.ceil(this.hands[0].stabilizedPalmPosition[0] * 1.4);
                               shoot.rifle.position.y = Math.ceil(this.hands[0].stabilizedPalmPosition[1] * 1.4);
+                              bullet.position.x = shoot.rifle.position.x + 0.6;
+                              bullet.position.y = shoot.rifle.position.y + 7.9
 
-                              ball.__dirtyPosition = true;
+                              bullet.__dirtyPosition = true;
                               shoot.rifle.__dirtyPosition = true;
                         }
                   }
